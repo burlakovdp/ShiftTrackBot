@@ -4,8 +4,9 @@
 # It echoes any incoming text messages.
 
 import telebot
+from config import TOKEN
 
-API_TOKEN = '8919200854:AAEb74idZTfSsJYs3mb_bnH65bg9arw8gOU'
+API_TOKEN = TOKEN
 
 bot = telebot.TeleBot(API_TOKEN)
 

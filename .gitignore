@@ -6,3 +6,5 @@ divers/
 test.py
 .DS_Store
 .zed
+config.py
+.env.*

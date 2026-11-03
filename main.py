@@ -15,7 +15,6 @@ chat_data = {}
 # Handle '/start' and '/help'
 @bot.message_handler(commands=['start'])
 def menu(message):
-    print(message)
     chat_id = message.chat.id
     handlers.data_initialiser(chat_data, chat_id)
     chat_data[chat_id]['stage'] = 0
@@ -28,29 +27,26 @@ def menu(message):
                                           and message.text == 'Сделать запись')
 def make_note(message):
     chat_id = message.chat.id
-    markup = handlers.button_creator(buttons['make_note'])
+    markup = handlers.button_creator(buttons['source'])
     chat_data[chat_id]['stage'] = 1
-    print(chat_data)
     bot.send_message(chat_id, 'Выберите источник', reply_markup=markup)
 
 @bot.message_handler(func=lambda message: chat_data[message.chat.id]['stage'] == 1
-                                          and (handlers.input_checker(message.text, buttons['make_note'])))
+                                          and (handlers.input_checker(message.text, buttons['source'])))
 def source(message):
     chat_id = message.chat.id
-    markup = handlers.button_creator(buttons['source'])
+    markup = handlers.button_creator(buttons['digits'])
     if message.text != 'Назад':
         chat_data[chat_id]['source'] = message.text
-    print(chat_data)
     bot.send_message(chat_id, 'Укажите количество сообщений', reply_markup=markup)
     chat_data[chat_id]['stage'] = 2
 
 @bot.message_handler(func=lambda message: (chat_data[message.chat.id]['stage'] == 2) and
                                           handlers.int_checker(message.text))
 def message_counter(message):
-    markup = handlers.button_creator(buttons['message_counter'])
+    markup = handlers.button_creator(buttons['approve'])
     chat_id = message.chat.id
     chat_data[chat_id]['message_counter'] = message.text
-    print(chat_data)
     bot.send_message(chat_id, 'Все верно?', reply_markup=markup)
     res = f'user: {message.chat.username}, source: {chat_data[chat_id]['source']}, messages: {chat_data[chat_id]['message_counter']} '
     bot.send_message(chat_id, res)
@@ -61,11 +57,16 @@ def approve(message):
     chat_id = message.chat.id
     database.insert(chat_data[chat_id])
     bot.send_message(chat_id, 'Данные добавлены')
+    chat_data[chat_id]['stage'] = 0
+    return menu(message)
     
 
 @bot.message_handler(func=lambda message: message.text=="Сводка")
 def info(message):
-    bot.send_message(message.chat.id, 'Вот сводка')
+    chat_id = message.chat.id
+    bot.send_message(chat_id, 'Вот сводка:')
+    bot.send_message(chat_id, handlers.info_printer(database.read(chat_data[chat_id]['user_id'])))
+    print(handlers.info_printer(database.read(chat_data[chat_id]['user_id'])))
     
 @bot.message_handler(func=lambda message: message.text == 'Назад')
 def back(message):
@@ -80,6 +81,12 @@ def back(message):
             return source(message)
         else:
             return menu(message)
+
+@bot.message_handler(func=lambda message: message.text == 'Отмена')
+def cancel(message):
+    chat_id = message.chat.id
+    chat_data[chat_id]['stage'] = 0
+    return menu(message)
 
 @bot.message_handler()
 def trash(message):

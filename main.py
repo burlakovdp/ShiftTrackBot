@@ -65,8 +65,8 @@ def approve(message):
 def info(message):
     chat_id = message.chat.id
     bot.send_message(chat_id, 'Вот сводка:')
-    bot.send_message(chat_id, handlers.info_printer(database.read(chat_data[chat_id]['user_id'])))
-    print(handlers.info_printer(database.read(chat_data[chat_id]['user_id'])))
+    bot.send_message(chat_id, handlers.msg_creator(database.read(chat_data[chat_id]['user_id'])))
+    print(handlers.msg_creator(database.read(chat_data[chat_id]['user_id'])))
     
 @bot.message_handler(func=lambda message: message.text == 'Назад')
 def back(message):
@@ -94,3 +94,17 @@ def trash(message):
     bot.send_message(chat_id, 'Ошибка ввода')
 
 bot.infinity_polling()
+
+
+#TODO Добавить утро, день, вечер и ночь после выбора источника
+#TODO Настроить форматирование для вывода
+#TODO Сделать клавиши в ряд а не списком
+#TODO Выделить жирным дата, источник, время суток
+#TODO Закинуть бота на клауд
+#TODO Переписать кнопки на словарь словарей (user_buttons и service buttons)
+
+#TODO Переписать юзера на класс
+#TODO Реализовать редактирование записей
+#TODO Подумать над названиями кнопок и добавить эмодзи
+#TODO Добавить аватарку и описание
+#TODO Написать доку для пользователей

@@ -6,7 +6,7 @@ from zoneinfo import ZoneInfo
 def insert(data):
 
     nice_tz = ZoneInfo("Europe/Paris")
-    
+
     day = datetime.now(nice_tz).date().isoformat()
 
     conn = sqlite3.connect("data.db")

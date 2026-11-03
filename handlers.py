@@ -2,7 +2,6 @@ import telebot
 from telebot import types
 
 from datetime import datetime
-from prettytable import PrettyTable
 
 def data_initialiser(dict, id):
     dict[id] = {}

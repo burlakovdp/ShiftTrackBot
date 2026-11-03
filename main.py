@@ -1,29 +1,89 @@
-#!/usr/bin/python
-
-# This is a simple echo bot using the decorator mechanism.
-# It echoes any incoming text messages.
-
 import telebot
+from telebot import types
 from config import TOKEN
+
+import handlers
+from buttons import buttons
+import database
 
 API_TOKEN = TOKEN
 
 bot = telebot.TeleBot(API_TOKEN)
 
+chat_data = {}
 
 # Handle '/start' and '/help'
-@bot.message_handler(commands=['help', 'start'])
-def send_welcome(message):
-    bot.reply_to(message, """\
-Hi there, I am EchoBot.
-I am here to echo your kind words back to you. Just say anything nice and I'll say the exact same thing to you!\
-""")
+@bot.message_handler(commands=['start'])
+def menu(message):
+    print(message)
+    chat_id = message.chat.id
+    handlers.data_initialiser(chat_data, chat_id)
+    chat_data[chat_id]['stage'] = 0
+    chat_data[chat_id]['user_id'] = message.from_user.id
+    markup = handlers.button_creator(buttons['menu'])
+    print(chat_data)
+    bot.send_message(chat_id, 'Выберите действие:', reply_markup=markup)
 
+@bot.message_handler(func=lambda message: chat_data[message.chat.id]['stage'] == 0
+                                          and message.text == 'Сделать запись')
+def make_note(message):
+    chat_id = message.chat.id
+    markup = handlers.button_creator(buttons['make_note'])
+    chat_data[chat_id]['stage'] = 1
+    print(chat_data)
+    bot.send_message(chat_id, 'Выберите источник', reply_markup=markup)
 
-# Handle all other messages with content_type 'text' (content_types defaults to ['text'])
-@bot.message_handler(func=lambda message: True)
-def echo_message(message):
-    bot.reply_to(message, message.text)
+@bot.message_handler(func=lambda message: chat_data[message.chat.id]['stage'] == 1
+                                          and (handlers.input_checker(message.text, buttons['make_note'])))
+def source(message):
+    chat_id = message.chat.id
+    markup = handlers.button_creator(buttons['source'])
+    if message.text != 'Назад':
+        chat_data[chat_id]['source'] = message.text
+    print(chat_data)
+    bot.send_message(chat_id, 'Укажите количество сообщений', reply_markup=markup)
+    chat_data[chat_id]['stage'] = 2
 
+@bot.message_handler(func=lambda message: (chat_data[message.chat.id]['stage'] == 2) and
+                                          handlers.int_checker(message.text))
+def message_counter(message):
+    markup = handlers.button_creator(buttons['message_counter'])
+    chat_id = message.chat.id
+    chat_data[chat_id]['message_counter'] = message.text
+    print(chat_data)
+    bot.send_message(chat_id, 'Все верно?', reply_markup=markup)
+    res = f'user: {message.chat.username}, source: {chat_data[chat_id]['source']}, messages: {chat_data[chat_id]['message_counter']} '
+    bot.send_message(chat_id, res)
+    chat_data[chat_id]['stage'] = 3    
+
+@bot.message_handler(func=lambda message: (chat_data[message.chat.id]['stage'] == 3) and message.text == 'Да')
+def approve(message):
+    chat_id = message.chat.id
+    database.insert(chat_data[chat_id])
+    bot.send_message(chat_id, 'Данные добавлены')
+    
+
+@bot.message_handler(func=lambda message: message.text=="Сводка")
+def info(message):
+    bot.send_message(message.chat.id, 'Вот сводка')
+    
+@bot.message_handler(func=lambda message: message.text == 'Назад')
+def back(message):
+    chat_id = message.chat.id
+    if chat_data[chat_id]['stage'] == 0:
+        return menu(message)
+    else:
+        chat_data[chat_id]['stage'] -= 1
+        if chat_data[chat_id]['stage'] == 1:
+            return make_note(message)
+        elif chat_data[chat_id]['stage'] == 2:
+            return source(message)
+        else:
+            return menu(message)
+
+@bot.message_handler()
+def trash(message):
+    chat_id = message.chat.id
+    bot.send_message(chat_id, 'Ошибка ввода')
 
 bot.infinity_polling()

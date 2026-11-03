@@ -2,9 +2,11 @@ __pycache__/
 *.pyc
 .env
 .vscode/
-divers/
-test.py
 .DS_Store
 .zed
 config.py
 .env.*
+.idea
+.project
+data*
+identifier.sqlite

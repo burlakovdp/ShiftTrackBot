@@ -2,14 +2,16 @@ import telebot
 from telebot import types
 
 from datetime import datetime
+import buttons as b
 
 def data_initialiser(dict, id):
     dict[id] = {}
 
-def button_creator(buttons_names):
+def button_creator(user_stage):
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-    for e in buttons_names:
-        item = types.KeyboardButton(e)
+    layout = b.stage[user_stage]['buttons']
+    for button in layout:
+        item = types.KeyboardButton(button)
         markup.add(item)
     return markup
 
@@ -23,6 +25,7 @@ def int_checker(text):
         return False
 
 # TODO Форматирование сообщения вот в таком виде
+
 '''
 Дата: 11/03/26 (утро/день/вечер/ночь)
 Количество вопросов: 10
@@ -44,3 +47,22 @@ def msg_creator(data):
                    f'---')
     return '\n'.join(res)
 
+def stage_manager(user_stage, user_input, handler_stage):
+    user_button = None
+    for button in b.BUTTONS:
+        if b.BUTTONS[button] == user_input:
+            user_button = button
+
+    next_user_stage = None
+    if user_button in b.stage[user_stage]['transition']:
+        next_user_stage = b.stage[user_stage]['transition'][user_button]
+
+    if (next_user_stage == handler_stage) and (next_user_stage is not None):
+        return True
+    return False
+
+def language_change(lang):
+    if lang == 'rus':
+        b.LANGUAGE = 'rus'
+    else:
+        b.LANGUAGE = 'eng'

@@ -2,8 +2,7 @@ import telebot
 from telebot import types
 from config import TOKEN
 
-import handlers
-from buttons import buttons
+import handlers as hs
 import database
 
 API_TOKEN = TOKEN
@@ -16,58 +15,58 @@ chat_data = {}
 @bot.message_handler(commands=['start'])
 def menu(message):
     chat_id = message.chat.id
-    handlers.data_initialiser(chat_data, chat_id)
-    chat_data[chat_id]['stage'] = 0
+    hs.data_initialiser(chat_data, chat_id)
+    chat_data[chat_id]['stage'] = 'menu_stage'
     chat_data[chat_id]['user_id'] = message.from_user.id
-    markup = handlers.button_creator(buttons['menu'])
-    print(chat_data)
+    markup = hs.button_creator(chat_data[chat_id]['stage'])
     bot.send_message(chat_id, 'Выберите действие:', reply_markup=markup)
 
-@bot.message_handler(func=lambda message: chat_data[message.chat.id]['stage'] == 0
-                                          and message.text == 'Сделать запись')
+@bot.message_handler(func=lambda message: hs.stage_manager(chat_data[message.chat.id]['stage'],
+                                                          message.text, 'make_note_stage'))
 def make_note(message):
     chat_id = message.chat.id
-    markup = handlers.button_creator(buttons['source'])
-    chat_data[chat_id]['stage'] = 1
+    chat_data[chat_id]['stage'] = 'make_note_stage'
+    markup = hs.button_creator(chat_data[chat_id]['stage'])
     bot.send_message(chat_id, 'Выберите источник', reply_markup=markup)
 
-@bot.message_handler(func=lambda message: chat_data[message.chat.id]['stage'] == 1
-                                          and (handlers.input_checker(message.text, buttons['source'])))
+@bot.message_handler(func=lambda message: hs.stage_manager(chat_data[message.chat.id]['stage'],
+                                                           message.text, 'source_stage'))
+
 def source(message):
     chat_id = message.chat.id
-    markup = handlers.button_creator(buttons['digits'])
-    if message.text != 'Назад':
-        chat_data[chat_id]['source'] = message.text
+    chat_data[chat_id]['stage'] = 'source_stage'
+    chat_data[chat_id]['source'] = message.text
+    markup = hs.button_creator(chat_data[chat_id]['stage'])
     bot.send_message(chat_id, 'Укажите количество сообщений', reply_markup=markup)
-    chat_data[chat_id]['stage'] = 2
 
-@bot.message_handler(func=lambda message: (chat_data[message.chat.id]['stage'] == 2) and
-                                          handlers.int_checker(message.text))
+@bot.message_handler(func=lambda message: hs.stage_manager(chat_data[message.chat.id]['stage'],
+                                           message.text, 'message_counter_stage'))
 def message_counter(message):
-    markup = handlers.button_creator(buttons['approve'])
     chat_id = message.chat.id
+    chat_data[chat_id]['stage'] = 'message_counter_stage'
+    markup = hs.button_creator(chat_data[chat_id]['stage'])
     chat_data[chat_id]['message_counter'] = message.text
     bot.send_message(chat_id, 'Все верно?', reply_markup=markup)
-    res = f'user: {message.chat.username}, source: {chat_data[chat_id]['source']}, messages: {chat_data[chat_id]['message_counter']} '
-    bot.send_message(chat_id, res)
-    chat_data[chat_id]['stage'] = 3    
 
-@bot.message_handler(func=lambda message: (chat_data[message.chat.id]['stage'] == 3) and message.text == 'Да')
+    res = f'user: {message.chat.username}, source: {chat_data[chat_id]['source']}, messages: {chat_data[chat_id]['message_counter']}'
+    bot.send_message(chat_id, res)
+
+@bot.message_handler(func=lambda message: hs.stage_manager(chat_data[message.chat.id]['stage'],
+                                           message.text, 'approve_stage'))
 def approve(message):
     chat_id = message.chat.id
+    chat_data[chat_id]['stage'] = 'approve_stage'
     database.insert(chat_data[chat_id])
     bot.send_message(chat_id, 'Данные добавлены')
-    chat_data[chat_id]['stage'] = 0
     return menu(message)
-    
 
+'''
 @bot.message_handler(func=lambda message: message.text=="Сводка")
-def info(message):
+def resume(message):
     chat_id = message.chat.id
     bot.send_message(chat_id, 'Вот сводка:')
-    bot.send_message(chat_id, handlers.msg_creator(database.read(chat_data[chat_id]['user_id'])))
-    print(handlers.msg_creator(database.read(chat_data[chat_id]['user_id'])))
-    
+    bot.send_message(chat_id, hs.msg_creator(database.read(chat_data[chat_id]['user_id'])))
+
 @bot.message_handler(func=lambda message: message.text == 'Назад')
 def back(message):
     chat_id = message.chat.id
@@ -87,7 +86,7 @@ def cancel(message):
     chat_id = message.chat.id
     chat_data[chat_id]['stage'] = 0
     return menu(message)
-
+'''
 @bot.message_handler()
 def trash(message):
     chat_id = message.chat.id
@@ -110,3 +109,5 @@ bot.infinity_polling()
 #TODO Подумать над названиями кнопок и добавить эмодзи
 #TODO Добавить аватарку и описание
 #TODO Написать доку для пользователей
+#TODO Добавить вкладку настроек
+#TODO Добавить поддержку нескольких языков

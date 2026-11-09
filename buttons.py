@@ -11,6 +11,17 @@ buttons_rus = {
     'digits': '1'
 }
 
+buttons_eng = {
+    'make_note': 'Make note',
+    'resume': 'Resume',
+    'amo': 'Amo',
+    'tg': 'Telegram bot',
+    'approve': 'Yes',
+    'back': 'Back',
+    'from_scratch': 'To start',
+    'digits': '1'
+}
+
 BUTTONS = buttons_rus
 
 stage = {
@@ -32,15 +43,17 @@ stage = {
         'transition': {
             'amo': 'source_stage',
             'tg': 'source_stage',
+            'back': 'menu_stage'
         },
         'prev_stage' : 'menu_stage'
     },
     'source_stage': {
         'buttons':  [BUTTONS['digits'], BUTTONS['back'], BUTTONS['from_scratch']],
         'transition': {
-            'digits': 'message_counter_stage'
+            'digits': 'message_counter_stage',
+            'back': 'menu_stage'
         },
-        'prev_stage': 'make_note_stage'
+        'prev_stage': 'menu_stage'
     },
     'message_counter_stage': {
         'buttons':  [BUTTONS['approve'], BUTTONS['back'], BUTTONS['from_scratch']],

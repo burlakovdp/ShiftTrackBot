@@ -47,11 +47,12 @@ def stage_manager(user_stage, user_input, handler_stage):
     for button in b.BUTTONS:
         if b.BUTTONS[button] == user_input:
             user_button = button
-
-    next_user_stage = None
-    if user_button in b.stage[user_stage]['transition']:
-        next_user_stage = b.stage[user_stage]['transition'][user_button]
-
+    try:
+        next_user_stage = None
+        if user_button in b.stage[user_stage]['transition']:
+            next_user_stage = b.stage[user_stage]['transition'][user_button]
+    except:
+        return False
     if (next_user_stage == handler_stage) and (next_user_stage is not None):
         return True
     #print(next_user_stage, handler_stage, user_button)

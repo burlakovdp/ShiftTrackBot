@@ -8,7 +8,11 @@ buttons_rus = {
     'approve': 'Да',
     'back': 'Назад',
     'from_scratch': 'Вернуться в начало',
-    'digits': '1'
+    'digits': '1',
+    'settings': 'Настройки',
+    'lang_change': 'Смена языка',
+    'rus_button': 'Русский',
+    'eng_button': 'English'
 }
 
 buttons_eng = {
@@ -19,7 +23,11 @@ buttons_eng = {
     'approve': 'Yes',
     'back': 'Back',
     'from_scratch': 'To start',
-    'digits': '1'
+    'digits': '1',
+    'settings': 'Settings',
+    'lang_change': 'Change language',
+    'rus_button': 'Русский',
+    'eng_button': 'English'
 }
 
 message_rus = {
@@ -28,7 +36,9 @@ message_rus = {
     'make_note_stage': 'Выберите источник',
     'source_stage' : 'Укажите количество сообщений',
     'message_counter_stage': 'Все верно?',
-    'approve_stage' : 'Данные добавлены'
+    'approve_stage' : 'Данные добавлены',
+    'settings_stage': 'Вот настройки:',
+    'language_change_stage': 'Выберите язык'
 }
 
 BUTTONS = buttons_rus
@@ -36,10 +46,11 @@ MESSAGE = message_rus
 
 stage = {
     'menu_stage': {
-        'buttons': [BUTTONS['make_note'], BUTTONS['resume']],
+        'buttons': [BUTTONS['make_note'], BUTTONS['resume'], BUTTONS['settings']],
         'transition':{
             'make_note': 'make_note_stage',
-            'resume': 'resume_stage'
+            'resume': 'resume_stage',
+            'settings': 'settings_stage'
         },
         'message': MESSAGE['menu_stage']
     },
@@ -48,6 +59,20 @@ stage = {
         'next_stage': None,
         'message': MESSAGE['resume_stage']
 
+    },
+    'settings_stage': {
+        'buttons': [BUTTONS['lang_change'], BUTTONS['back']],
+        'next_stage': 'menu_stage',
+        'transition': {
+          'lang_change': 'language_change_stage'
+        },
+        'message': MESSAGE['settings_stage']
+    },
+    'language_change_stage': {
+        'buttons': [BUTTONS['rus_button'], BUTTONS['eng_button'],  BUTTONS['back']],
+        'transition': None,
+        'next_stage': 'menu_stage',
+        'message': MESSAGE['language_change_stage']
     },
     'make_note_stage': {
         'buttons':  [BUTTONS['amo'], BUTTONS['tg'], BUTTONS['back'], BUTTONS['from_scratch']],

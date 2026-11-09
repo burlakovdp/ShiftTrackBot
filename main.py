@@ -48,6 +48,24 @@ def resume(message):
     bot.send_message(chat_id, hs.msg_creator(database.read(chat_data[chat_id]['user_id'])))
 
 @bot.message_handler(func=lambda message: hs.stage_manager(chat_data[message.chat.id]['stage'].top(),
+                                                           message.text, 'settings_stage'))
+def settings(message):
+    chat_id = message.chat.id
+    chat_data[chat_id]['stage'].push('settings_stage')
+    markup = hs.button_creator(chat_data[chat_id]['stage'].top())
+    print(chat_data[chat_id]['stage'])
+    bot.send_message(chat_id, hs.message_writer(chat_data[chat_id]['stage'].top()), reply_markup=markup)
+
+@bot.message_handler(func=lambda message: hs.stage_manager(chat_data[message.chat.id]['stage'].top(),
+                                                           message.text, 'language_change_stage'))
+def language_change(message):
+    chat_id = message.chat.id
+    chat_data[chat_id]['stage'].push('language_change_stage')
+    markup = hs.button_creator(chat_data[chat_id]['stage'].top())
+    print(chat_data[chat_id]['stage'])
+    bot.send_message(chat_id, hs.message_writer(chat_data[chat_id]['stage'].top()), reply_markup=markup)
+
+@bot.message_handler(func=lambda message: hs.stage_manager(chat_data[message.chat.id]['stage'].top(),
                                                           message.text, 'make_note_stage'))
 def make_note(message):
     chat_id = message.chat.id

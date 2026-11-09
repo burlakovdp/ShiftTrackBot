@@ -41,6 +41,13 @@ def cancel(message):
     bot.send_message(chat_id, hs.message_writer(chat_data[chat_id]['stage'].top()), reply_markup=markup)
 
 @bot.message_handler(func=lambda message: hs.stage_manager(chat_data[message.chat.id]['stage'].top(),
+                                                           message.text, 'resume_stage'))
+def resume(message):
+    chat_id = message.chat.id
+    bot.send_message(chat_id, hs.message_writer(chat_data[chat_id]['stage'].top()))
+    bot.send_message(chat_id, hs.msg_creator(database.read(chat_data[chat_id]['user_id'])))
+
+@bot.message_handler(func=lambda message: hs.stage_manager(chat_data[message.chat.id]['stage'].top(),
                                                           message.text, 'make_note_stage'))
 def make_note(message):
     chat_id = message.chat.id
@@ -81,16 +88,7 @@ def approve(message):
     database.insert(chat_data[chat_id])
     bot.send_message(chat_id, hs.message_writer(chat_data[chat_id]['stage'].top()))
     return menu(message)
-'''
 
-@bot.message_handler(func=lambda message: message.text=="Сводка")
-def resume(message):
-    chat_id = message.chat.id
-    bot.send_message(chat_id, 'Вот сводка:')
-    bot.send_message(chat_id, hs.msg_creator(database.read(chat_data[chat_id]['user_id'])))
-
-
-'''
 @bot.message_handler()
 def trash(message):
     chat_id = message.chat.id

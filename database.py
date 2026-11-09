@@ -25,7 +25,6 @@ def read(user_id):
                 " WHERE user_id = ?", (user_id,))
     res = cur.fetchall()
     conn.close()
-    print(res)
     return res
 
 

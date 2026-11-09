@@ -58,7 +58,7 @@ def stage_manager(user_stage, user_input, handler_stage):
     #print('ICI')
     return False
 
-def back_manager(user_stage, user_input):
+def back_manager(user_stage_stack, user_input):
     user_button = None
     for button in b.BUTTONS:
         if b.BUTTONS[button] == user_input:
@@ -67,11 +67,20 @@ def back_manager(user_stage, user_input):
     if not user_button == 'back':
         return False
 
-    if user_stage.size() > 1:
+    if user_stage_stack.size() > 1:
        return True
 
     return False
 
+def cancel_manager(user_stage_stack):
+    while user_stage_stack.size() > 2:
+        user_stage_stack.pop()
+
+def message_writer(user_stage):
+    res = b.stage[user_stage]['message']
+    if res is None:
+        return ''
+    return res
 
 def language_change(lang):
     if lang == 'rus':

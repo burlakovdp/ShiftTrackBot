@@ -22,7 +22,17 @@ buttons_eng = {
     'digits': '1'
 }
 
+message_rus = {
+    'menu_stage': 'Выберите действие:',
+    'resume_stage': 'Вот сводка:',
+    'make_note_stage': 'Выберите источник',
+    'source_stage' : 'Укажите количество сообщений',
+    'message_counter_stage': 'Все верно?',
+    'approve_stage' : 'Данные добавлены'
+}
+
 BUTTONS = buttons_rus
+MESSAGE = message_rus
 
 stage = {
     'menu_stage': {
@@ -31,12 +41,13 @@ stage = {
             'make_note': 'make_note_stage',
             'resume': 'resume_stage'
         },
-        'prev_stage': None
+        'message': MESSAGE['menu_stage']
     },
     'resume_stage' : {
         'buttons': None,
         'next_stage': None,
-        'prev_stage': 'menu_stage'
+        'message': MESSAGE['resume_stage']
+
     },
     'make_note_stage': {
         'buttons':  [BUTTONS['amo'], BUTTONS['tg'], BUTTONS['back'], BUTTONS['from_scratch']],
@@ -45,7 +56,7 @@ stage = {
             'tg': 'source_stage',
             'back': 'menu_stage'
         },
-        'prev_stage' : 'menu_stage'
+        'message': MESSAGE['make_note_stage']
     },
     'source_stage': {
         'buttons':  [BUTTONS['digits'], BUTTONS['back'], BUTTONS['from_scratch']],
@@ -53,18 +64,18 @@ stage = {
             'digits': 'message_counter_stage',
             'back': 'menu_stage'
         },
-        'prev_stage': 'menu_stage'
+        'message': MESSAGE['source_stage']
     },
     'message_counter_stage': {
         'buttons':  [BUTTONS['approve'], BUTTONS['back'], BUTTONS['from_scratch']],
         'transition' : {
             'approve': 'approve_stage'
         },
-        'prev_stage': 'source_stage'
+        'message': MESSAGE['message_counter_stage']
     },
     'approve_stage' : {
         'buttons': None,
         'next_stage': 'menu_stage',
-        'prev_stage': 'message_counter_stage'
+        'message': MESSAGE['approve_stage']
     }
 }

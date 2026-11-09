@@ -18,6 +18,7 @@ def menu(message):
     hs.data_initialiser(chat_data, chat_id)
     chat_data[chat_id]['stage'] = hs.Stack()
     chat_data[chat_id]['stage'].push('menu_stage')
+    print(chat_data[chat_id]['stage'])
     chat_data[chat_id]['user_id'] = message.from_user.id
     markup = hs.button_creator(chat_data[chat_id]['stage'].top())
     bot.send_message(chat_id, hs.message_writer(chat_data[chat_id]['stage'].top()), reply_markup=markup)
@@ -27,9 +28,17 @@ def back(message):
     chat_id = message.chat.id
     chat_data[chat_id]['stage'].pop()
     markup = hs.button_creator(chat_data[chat_id]['stage'].top())
+    print(chat_data[chat_id]['stage'])
     bot.send_message(chat_id, hs.message_writer(chat_data[chat_id]['stage'].top()), reply_markup=markup)
 
-@bot.message_handler(func=lambda message: )
+@bot.message_handler(func=lambda message: hs.cancel_manager(chat_data[message.chat.id]['stage'].top(), message.text))
+def cancel(message):
+    chat_id = message.chat.id
+    while chat_data[chat_id]['stage'].size() > 1:
+        chat_data[chat_id]['stage'].pop()
+    markup = hs.button_creator(chat_data[chat_id]['stage'].top())
+    print(chat_data[chat_id]['stage'])
+    bot.send_message(chat_id, hs.message_writer(chat_data[chat_id]['stage'].top()), reply_markup=markup)
 
 @bot.message_handler(func=lambda message: hs.stage_manager(chat_data[message.chat.id]['stage'].top(),
                                                           message.text, 'make_note_stage'))
@@ -37,6 +46,7 @@ def make_note(message):
     chat_id = message.chat.id
     chat_data[chat_id]['stage'].push('make_note_stage')
     markup = hs.button_creator(chat_data[chat_id]['stage'].top())
+    print(chat_data[chat_id]['stage'])
     bot.send_message(chat_id, hs.message_writer(chat_data[chat_id]['stage'].top()), reply_markup=markup)
 
 @bot.message_handler(func=lambda message: hs.stage_manager(chat_data[message.chat.id]['stage'].top(),
@@ -46,6 +56,7 @@ def source(message):
     chat_data[chat_id]['stage'].push('source_stage')
     chat_data[chat_id]['source'] = message.text
     markup = hs.button_creator(chat_data[chat_id]['stage'].top())
+    print(chat_data[chat_id]['stage'])
     bot.send_message(chat_id, hs.message_writer(chat_data[chat_id]['stage'].top()), reply_markup=markup)
 
 @bot.message_handler(func=lambda message: hs.stage_manager(chat_data[message.chat.id]['stage'].top(),
@@ -54,6 +65,7 @@ def message_counter(message):
     chat_id = message.chat.id
     chat_data[chat_id]['stage'].push('message_counter_stage')
     markup = hs.button_creator(chat_data[chat_id]['stage'].top())
+    print(chat_data[chat_id]['stage'])
     chat_data[chat_id]['message_counter'] = message.text
     bot.send_message(chat_id, hs.message_writer(chat_data[chat_id]['stage'].top()), reply_markup=markup)
 
@@ -65,6 +77,7 @@ def message_counter(message):
 def approve(message):
     chat_id = message.chat.id
     chat_data[chat_id]['stage'].push('approve_stage')
+    print(chat_data[chat_id]['stage'])
     database.insert(chat_data[chat_id])
     bot.send_message(chat_id, hs.message_writer(chat_data[chat_id]['stage'].top()))
     return menu(message)
@@ -77,11 +90,6 @@ def resume(message):
     bot.send_message(chat_id, hs.msg_creator(database.read(chat_data[chat_id]['user_id'])))
 
 
-@bot.message_handler(func=lambda message: message.text == 'Отмена')
-def cancel(message):
-    chat_id = message.chat.id
-    chat_data[chat_id]['stage'] = 0
-    return menu(message)
 '''
 @bot.message_handler()
 def trash(message):

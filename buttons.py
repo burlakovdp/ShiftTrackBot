@@ -54,7 +54,7 @@ stage = {
         'transition': {
             'amo': 'source_stage',
             'tg': 'source_stage',
-            'back': 'menu_stage'
+            'back': 'menu_stage',
         },
         'message': MESSAGE['make_note_stage']
     },

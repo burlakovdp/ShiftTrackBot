@@ -72,9 +72,19 @@ def back_manager(user_stage_stack, user_input):
 
     return False
 
-def cancel_manager(user_stage_stack):
-    while user_stage_stack.size() > 2:
-        user_stage_stack.pop()
+def cancel_manager(user_stage, user_input):
+    user_button = None
+    for button in b.BUTTONS:
+        if b.BUTTONS[button] == user_input:
+            user_button = button
+
+    if not user_button == 'from_scratch':
+        return False
+
+    if not user_input in b.stage[user_stage]['buttons']:
+        return False
+
+    return True
 
 def message_writer(user_stage):
     res = b.stage[user_stage]['message']

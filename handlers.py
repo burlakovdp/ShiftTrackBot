@@ -34,18 +34,18 @@ class Stack:
 def data_initialiser(dict, id):
     dict[id] = {}
 
-def button_creator(user_stage):
-    markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-    layout = b.stage[user_stage]['buttons']
-    for button in layout:
-        item = types.KeyboardButton(button)
-        markup.add(item)
-    return markup
+def button_creator(user_stage, language):
+    markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=2)
+    layout = language_translater(b.stage,'buttons', user_stage, language)
+    items = [types.KeyboardButton(button) for button in layout]
+    return markup.add(*items)
 
-def stage_manager(user_stage, user_input, handler_stage):
+#TODO Переписать три функции в одну, так как они повторяют друг друга
+def stage_manager(user_stage, user_input, handler_stage, user_lang):
     user_button = None
-    for button in b.BUTTONS:
-        if b.BUTTONS[button] == user_input:
+
+    for button in b.buttons[user_lang]:
+        if b.buttons[user_lang][button] == user_input:
             user_button = button
     try:
         next_user_stage = None
@@ -55,14 +55,12 @@ def stage_manager(user_stage, user_input, handler_stage):
         return False
     if (next_user_stage == handler_stage) and (next_user_stage is not None):
         return True
-    #print(next_user_stage, handler_stage, user_button)
-    #print('ICI')
     return False
 
-def back_manager(user_stage_stack, user_input):
+def back_manager(user_stage_stack, user_input, user_lang):
     user_button = None
-    for button in b.BUTTONS:
-        if b.BUTTONS[button] == user_input:
+    for button in b.buttons[user_lang]:
+        if b.buttons[user_lang][button] == user_input:
             user_button = button
 
     if not user_button == 'back':
@@ -73,40 +71,49 @@ def back_manager(user_stage_stack, user_input):
 
     return False
 
-def cancel_manager(user_stage, user_input):
+def cancel_manager(user_stage, user_input, user_lang):
     user_button = None
-    for button in b.BUTTONS:
-        if b.BUTTONS[button] == user_input:
+    for button in b.buttons[user_lang]:
+        if b.buttons[user_lang][button] == user_input:
             user_button = button
-
     if not user_button == 'from_scratch':
         return False
-
-    if not user_input in b.stage[user_stage]['buttons']:
+    print(user_input)
+    if not user_input in language_translater(b.stage, 'buttons', user_stage, user_lang):
         return False
-
     return True
 
-def message_writer(user_stage):
-    res = b.stage[user_stage]['message']
+def message_writer(user_stage, user_lang):
+    res = language_translater(b.stage, 'message', user_stage, user_lang)
+    print(res)
     if res is None:
         return ''
     return res
 
 def language_change(lang):
-    if lang == 'rus':
-        b.LANGUAGE = 'rus'
+    if lang == 'Русский':
+        return 'ru'
+    elif lang == 'English':
+        return 'eng'
+    return 'ru'
+
+#TODO нужен вот такой вид на return [BUTTONS['make_note'], BUTTONS['resume'], BUTTONS['settings']]// MESSAGE['resume_stage']
+def language_translater(data_stage, data_type, user_stage, user_lang):
+    if data_type == 'buttons':
+        type_storage = b.buttons
+    elif data_type == 'message':
+        type_storage = b.message
     else:
-        b.LANGUAGE = 'eng'
-
-def input_checker(text, buttons):
-    return (text != 'Назад' and text != 'Отмена') and (text in buttons)
-
-def int_checker(text):
-    try:
-        return (type(int(text)) is int) and int(text) >= 0
-    except ValueError:
         return False
+
+    buttons = data_stage[user_stage][data_type]
+
+    res = []
+    for elem in type_storage[user_lang]:
+        if elem in buttons:
+            res.append(type_storage[user_lang][elem])
+    return res
+
 
 def date_transformer(date):
     tmp = date.split('-')

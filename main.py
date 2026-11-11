@@ -160,7 +160,7 @@ def approve(message):
     user = chat_data[chat_id]
     user.push_stage('approve_stage')
     user.print_stage()
-    database.insert(user.get_user_id(), user.get_data('source'), user.get_data('message_counter'))
+    database.insert(user.get_user_id(), user.get_data('source'), user.get_data('shift'), user.get_data('message_counter'))
     bot.send_message(chat_id, hs.message_writer(user.get_stage(), user.get_language()))
     return menu(message)
 

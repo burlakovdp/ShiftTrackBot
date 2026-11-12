@@ -1,37 +1,41 @@
+import utils as u
+
 class StorageManager:
     def __init__(self):
         self.buttons = {
             'eng': {
-                'make_note': 'Make a note',
-                'resume': 'Summary',
+                'make_note': '📝 Add note',
+                'resume': '📊 Summary',
                 'amo': 'Amo',
-                'tg': 'Telegram chat',
-                'approve': 'Yes',
-                'back': 'Back',
-                'from_scratch': 'Return to start',
-                'digits': '1',
-                'settings': 'Settings',
-                'lang_change': 'Change language',
-                'rus_button': 'Русский',
-                'eng_button': 'English',
+                'tg': 'Telegram',
+                'approve': '✅ Yes',
+                'back': '🔙 Back',
+                'from_scratch': '🏠 Main menu',
+                'digits': ['1','2','3','4','5', '6', '7', '8', '9',
+                           '10', '11', '12', '13', '14', '15'],
+                'settings': '⚙️ Settings',
+                'lang_change': '🌐 Change language',
+                'rus_button': '🇷🇺 Русский',
+                'eng_button': '🇬🇧 English',
                 'morning': 'Morning',
                 'day': 'Day',
                 'evening': 'Evening',
                 'night': 'Night'
             },
             'ru' : {
-                'make_note': 'Сделать запись',
-                'resume': 'Сводка',
+                'make_note': '📝 Сделать запись',
+                'resume': '📊 Сводка',
                 'amo': 'Амо',
-                'tg': 'Чат в телеграмме',
-                'approve': 'Да',
-                'back': 'Назад',
-                'from_scratch': 'Вернуться в начало',
-                'digits': '1',
-                'settings': 'Настройки',
-                'lang_change': 'Смена языка',
-                'rus_button': 'Русский',
-                'eng_button': 'English',
+                'tg': 'Чат в телеграме',
+                'approve': '✅ Да',
+                'back': '🔙 Назад',
+                'from_scratch': '🏠 Вернуться в начало',
+                'digits': ['1','2','3','4','5', '6', '7', '8', '9',
+                           '10', '11', '12', '13', '14', '15'],
+                'settings': '⚙️ Настройки',
+                'lang_change': '🌐 Смена языка',
+                'rus_button': '🇷🇺 Русский',
+                'eng_button': '🇬🇧 English',
                 'morning': 'Утро',
                 'day': 'День',
                 'evening': 'Вечер',
@@ -40,28 +44,28 @@ class StorageManager:
         }
         self.message = {
             'eng': {
-                'menu_stage': 'Select an action:',
-                'resume_stage': 'Here is the summary:',
-                'make_note_stage': 'Select a source',
-                'source_stage': 'Enter the number of messages',
-                'shift_stage': 'Select a shift',
-                'message_counter_stage': 'Is everything correct?',
-                'approve_stage': 'Data added',
-                'settings_stage': 'Here are the settings:',
-                'language_choose_stage': 'Select language',
-                'language_change_stage': 'Language changed'
+                'menu_stage': '👇 Select an action:',
+                'resume_stage': '📊 Here is your summary:',
+                'make_note_stage': '📥 Select a source:',
+                'source_stage': '🔢 Enter the number of messages:',
+                'shift_stage': '🕒 Select a shift:',
+                'message_counter_stage': '👀 Is everything correct?',
+                'approve_stage': '✨ Data successfully added!',
+                'settings_stage': '⚙️ Settings:',
+                'language_choose_stage': '🌐 Select language:',
+                'language_change_stage': '✅ Language updated!'
             },
             'ru' : {
-                'menu_stage': 'Выберите действие:',
-                'resume_stage': 'Вот сводка:',
-                'make_note_stage': 'Выберите источник',
-                'source_stage' : 'Укажите количество сообщений',
-                'shift_stage': 'Выберите смену',
-                'message_counter_stage': 'Все верно?',
-                'approve_stage' : 'Данные добавлены',
-                'settings_stage': 'Вот настройки:',
-                'language_choose_stage': 'Выберите язык',
-                'language_change_stage': 'Язык сменен'
+                'menu_stage': '👇 Выберите действие:',
+                'resume_stage': '📊 Ваша сводка:',
+                'make_note_stage': '📥 Выберите источник:',
+                'source_stage' : '🔢 Введите количество сообщений:',
+                'shift_stage': '🕒 Выберите смену:',
+                'message_counter_stage': '👀 Всё верно?',
+                'approve_stage' : '✨ Данные успешно добавлены!',
+                'settings_stage': '⚙️ Настройки:',
+                'language_choose_stage': '🌐 Выберите язык:',
+                'language_change_stage': '✅ Язык успешно изменён!'
             }
         }
         self.stage = {
@@ -146,21 +150,25 @@ class StorageManager:
     def get_buttons_names(self, user_stage, user_lang):
         stage_buttons_id = self.stage[user_stage]['buttons']
         try:
-            return [self.buttons[user_lang][id_button] for id_button in self.buttons[user_lang] if id_button in stage_buttons_id]
+            res = []
+            for id_button in self.buttons[user_lang]:
+                if id_button in stage_buttons_id:
+                    if type(self.buttons[user_lang][id_button]) == list:
+                        res.extend(self.buttons[user_lang][id_button])
+                    else:
+                        res.append(self.buttons[user_lang][id_button])
+            return res
         except:
             return None
 
     def get_buttons_ids(self, user_stage):
         return self.stage[user_stage]['buttons']
 
-    def get_button_name(self):
-        return
-
     def get_button_id(self, user_input, user_lang):
         buttons_ids = self.buttons[user_lang]
         res = None
         for button_id in buttons_ids:
-            if user_input == self.buttons[user_lang][button_id]:
+            if user_input in self.buttons[user_lang][button_id]:
                 res = button_id
         return res
 

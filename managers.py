@@ -1,4 +1,4 @@
-import utils as u
+from stack import Stack
 
 class StorageManager:
     def __init__(self):
@@ -179,6 +179,7 @@ class UserManager:
     def __init__(self):
         self.user_id = None
         self.data = {}
+        self.stages = Stack()
 
     def add_user_id(self, id):
         self.user_id = id
@@ -196,16 +197,16 @@ class UserManager:
         return self.user_id
 
     def push_stage(self, stage):
-        self.data['stage'].push(stage)
+        self.stages.push(stage)
 
     def pop_stage(self):
-        return self.data['stage'].pop()
+        return self.stages.pop()
 
     def get_stage(self):
-        return self.data['stage'].top()
+        return self.stages.top()
 
     def get_size_stage(self):
-        return self.data['stage'].size()
+        return self.stages.size()
 
     def print_stage(self):
         print(self.get_stage())

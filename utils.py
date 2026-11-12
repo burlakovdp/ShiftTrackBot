@@ -1,38 +1,6 @@
-import telebot
 from telebot import types
+from managers import storage
 
-from datetime import datetime
-from managers import *
-
-class Stack:
-    def __init__(self):
-        self.storage = []
-
-    def is_empty(self):
-        return not self.storage
-
-    def push(self, e):
-        self.storage.append(e)
-
-    def pop(self):
-        if not self.is_empty():
-            return self.storage.pop()
-        return None
-
-    def top(self):
-        if not self.is_empty():
-            return self.storage[len(self.storage)-1]
-        return None
-
-    def size(self):
-        return len(self.storage)
-
-    def __str__ (self):
-        return str(self.storage)
-
-
-def data_initialiser(dict, id):
-    dict[id] = {}
 
 def button_creator(user_stage, user_lang):
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=2)

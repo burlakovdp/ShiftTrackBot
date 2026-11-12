@@ -20,11 +20,13 @@ def insert_data(user_id, class_type, shift, message_counter):
 def read_user_language(user_id):
     conn = sqlite3.connect("data.db")
     cur = conn.cursor()
+    cur.execute("INSERT OR IGNORE INTO users (user_id) VALUES (?)", (user_id,))
     cur.execute("SELECT language "
                 "FROM users"
                 " WHERE user_id = ?", ( user_id,))
     res = cur.fetchall()
     conn.close()
+    print(res)
     return res[0][0]
 
 def update_user_language(user_id, language):

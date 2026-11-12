@@ -72,12 +72,12 @@ def cancel_manager(user_stage, user_input, user_lang):
         return True
     return False
 
-def language_change(lang):
-    if lang == '🇷🇺 Русский':
-        return 'ru'
-    elif lang == '🇬🇧 English':
+def language_change(user_input, user_lang):
+    user_button_id = storage.get_button_id(user_input, user_lang)
+    if user_button_id == 'eng_button':
         return 'eng'
-    return 'ru'
+    else:
+        return 'ru'
 
 def date_transformer(date):
     tmp = date.split('-')

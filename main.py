@@ -99,9 +99,8 @@ def language_change(message):
     user = chat_data[chat_id]
     user.push_stage('language_change_stage')
     user.print_stage()
-    language = hs.language_change(message.text)
+    language = hs.language_change(message.text, user.get_language())
     user.add_data('language', language)
-    print(language)
     database.update_user_language(user.get_user_id(), language)
     bot.send_message(chat_id, hs.message_writer(user.get_stage(), user.get_language()))
     cancel(message)

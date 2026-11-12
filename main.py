@@ -7,7 +7,7 @@ from managers import *
 import database
 
 API_TOKEN = TOKEN
-
+DEFAULT_LANGUAGE = 'eng'
 bot = telebot.TeleBot(API_TOKEN)
 
 chat_data = {}
@@ -20,8 +20,14 @@ def menu(message):
     chat_data[chat_id] = user
     user.add_data('stage', hs.Stack())
     user.push_stage('menu_stage')
-    user.add_data('language', 'eng')
     user.add_user_id(message.from_user.id)
+
+    #TODO Ask professor
+    user_language = database.read_user_language(user.get_user_id())
+    if user_language is None:
+        user_language = DEFAULT_LANGUAGE
+
+    user.add_data('language', user_language)
     user.print_stage()
     markup = hs.button_creator(user.get_stage(), user.get_language())
     bot.send_message(chat_id, hs.message_writer(user.get_stage(),
@@ -93,7 +99,10 @@ def language_change(message):
     user = chat_data[chat_id]
     user.push_stage('language_change_stage')
     user.print_stage()
-    user.add_data('language' ,hs.language_change(message.text))
+    language = hs.language_change(message.text)
+    user.add_data('language', language)
+    print(language)
+    database.update_user_language(user.get_user_id(), language)
     bot.send_message(chat_id, hs.message_writer(user.get_stage(), user.get_language()))
     cancel(message)
 
@@ -160,7 +169,7 @@ def approve(message):
     user = chat_data[chat_id]
     user.push_stage('approve_stage')
     user.print_stage()
-    database.insert(user.get_user_id(), user.get_data('source'), user.get_data('shift'), user.get_data('message_counter'))
+    database.insert_data(user.get_user_id(), user.get_data('source'), user.get_data('shift'), user.get_data('message_counter'))
     bot.send_message(chat_id, hs.message_writer(user.get_stage(), user.get_language()))
     return menu(message)
 

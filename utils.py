@@ -73,9 +73,9 @@ def cancel_manager(user_stage, user_input, user_lang):
     return False
 
 def language_change(lang):
-    if lang == 'Русский':
+    if lang == '🇷🇺 Русский':
         return 'ru'
-    elif lang == 'English':
+    elif lang == '🇬🇧 English':
         return 'eng'
     return 'ru'
 

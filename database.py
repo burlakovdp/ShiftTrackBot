@@ -26,7 +26,7 @@ def read_user_language(user_id):
                 " WHERE user_id = ?", ( user_id,))
     res = cur.fetchall()
     conn.close()
-    print(res)
+    #print(res)
     return res[0][0]
 
 def update_user_language(user_id, language):

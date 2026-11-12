@@ -10,7 +10,7 @@ def button_creator(user_stage, user_lang):
 
 def message_writer(user_stage, user_lang):
     res = storage.get_message(user_stage, user_lang)
-    print(res)
+    #print(res)
     if res is None:
         return ''
     return res

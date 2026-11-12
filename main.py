@@ -27,7 +27,7 @@ def menu(message):
         user_language = DEFAULT_LANGUAGE
 
     user.add_data('language', user_language)
-    user.print_stage()
+    #user.print_stage()
     markup = u.button_creator(user.get_stage(), user.get_language())
     bot.send_message(chat_id, u.message_writer(user.get_stage(),
                                                 user.get_language()), reply_markup=markup)
@@ -62,7 +62,7 @@ def resume(message):
     user = chat_data[chat_id]
     user.push_stage('resume_stage')
     bot.send_message(chat_id, u.message_writer(user.get_stage(), user.get_language()))
-    user.print_stage()
+    #user.print_stage()
     bot.send_message(chat_id, u.msg_creator(database.read(user.get_user_id())))
     cancel(message)
 
@@ -86,7 +86,7 @@ def language_choose(message):
     user = chat_data[chat_id]
     user.push_stage('language_choose_stage')
     markup = u.button_creator(user.get_stage(), user.get_language())
-    user.print_stage()
+    #user.print_stage()
     bot.send_message(chat_id, u.message_writer(user.get_stage(), user.get_language()), reply_markup=markup)
 
 
@@ -97,7 +97,7 @@ def language_change(message):
     chat_id = message.chat.id
     user = chat_data[chat_id]
     user.push_stage('language_change_stage')
-    user.print_stage()
+    #user.print_stage()
     language = u.language_change(message.text, user.get_language())
     user.add_data('language', language)
     database.update_user_language(user.get_user_id(), language)
@@ -113,7 +113,7 @@ def make_note(message):
     user = chat_data[chat_id]
     user.push_stage('make_note_stage')
     markup = u.button_creator(user.get_stage(), user.get_language())
-    user.print_stage()
+    #user.print_stage()
     bot.send_message(chat_id, u.message_writer(user.get_stage(), user.get_language()), reply_markup=markup)
 
 @bot.message_handler(func=lambda message: u.stage_manager(chat_data[message.chat.id].get_stage(),
@@ -125,7 +125,7 @@ def shift(message):
     user.push_stage('shift_stage')
     user.add_data('source', message.text)
     markup = u.button_creator(user.get_stage(), user.get_language())
-    user.print_stage()
+    #user.print_stage()
     bot.send_message(chat_id, u.message_writer(user.get_stage(), user.get_language()), reply_markup=markup)
 
 
@@ -138,7 +138,7 @@ def source(message):
     user.push_stage('source_stage')
     user.add_data('shift', message.text)
     markup = u.button_creator(user.get_stage(), user.get_language())
-    user.print_stage()
+    #user.print_stage()
     bot.send_message(chat_id, u.message_writer(user.get_stage(), user.get_language()), reply_markup=markup)
 
 
@@ -151,7 +151,7 @@ def message_counter(message):
     user.push_stage('message_counter_stage')
     user.add_data('message_counter', message.text)
     markup = u.button_creator(user.get_stage(), user.get_language())
-    user.print_stage()
+    #user.print_stage()
     bot.send_message(chat_id, u.message_writer(user.get_stage(), user.get_language()), reply_markup=markup)
 
     res = (f'user: {message.chat.username}, source: {user.get_data('source')}, '
@@ -166,7 +166,7 @@ def approve(message):
     chat_id = message.chat.id
     user = chat_data[chat_id]
     user.push_stage('approve_stage')
-    user.print_stage()
+    #user.print_stage()
     database.insert_data(user.get_user_id(), user.get_data('source'), user.get_data('shift'), user.get_data('message_counter'))
     bot.send_message(chat_id, u.message_writer(user.get_stage(), user.get_language()))
     return menu(message)
@@ -174,7 +174,7 @@ def approve(message):
 @bot.message_handler()
 def trash(message):
     chat_id = message.chat.id
-    bot.send_message(chat_id, 'Ошибка ввода')
+    bot.send_message(chat_id, 'Error')
 
 bot.infinity_polling()
 
@@ -182,6 +182,7 @@ bot.infinity_polling()
 #TODO Вывод сводки в pdf формате (Выделить жирным дата, источник, время суток)
 #TODO Написать доку для пользователей
 #TODO Реализовать редактирование записей
+#TODO Исправить в managers get_button_id проверку на in
 
 #DONE Добавить утро, день, вечер и ночь после выбора источника
 #Done Добавить больше 10 сообщений

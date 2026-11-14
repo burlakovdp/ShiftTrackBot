@@ -58,4 +58,6 @@ def msg_creator(data):
                    f'Количество вопросов: {e[1]}\n'
                    f'Источник: {e[0]}\n'
                    f'---')
+    if not res:
+        return 'No data'
     return '\n'.join(res)

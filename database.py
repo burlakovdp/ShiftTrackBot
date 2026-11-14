@@ -3,7 +3,7 @@ from datetime import datetime
 from zoneinfo import ZoneInfo
 
 
-def insert_data(user_id, class_type, shift, message_counter):
+def insert_data(user_id, shift, message_counter_1, message_counter_2):
 
     nice_tz = ZoneInfo("Europe/Paris")
 
@@ -12,8 +12,8 @@ def insert_data(user_id, class_type, shift, message_counter):
     conn = sqlite3.connect("data.db")
     cur = conn.cursor()
     cur.execute("INSERT OR IGNORE INTO users (user_id) VALUES (?)", (user_id,))
-    cur.execute("INSERT INTO class (user_id, class_type, shift, counter_messages, date) VALUES (?, ?, ?, ?, ?)",
-                (user_id, class_type, shift, message_counter, day))
+    cur.execute("INSERT INTO class (user_id, shift, counter_amo, counter_tg, date) VALUES (?, ?, ?, ?, ?)",
+                (user_id, shift, message_counter_1, message_counter_2, day))
     conn.commit()
     conn.close()
 

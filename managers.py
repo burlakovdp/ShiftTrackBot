@@ -45,34 +45,43 @@ class StorageManager:
         self.message = {
             'eng': {
                 'menu_stage': '👇 Select an action:',
-                'resume_stage': '📊 Here is your summary:',
-                'make_note_stage': '📥 Select a source:',
-                'source_stage': '🔢 Enter the number of messages:',
+                'resume_stage': '📊 Your summary:',
                 'shift_stage': '🕒 Select a shift:',
-                'message_counter_stage': '👀 Is everything correct?',
+                'counter_stage_1': '🔢 Enter the number of messages for Amo:',
+                'counter_stage_2': '🔢 Enter the number of messages for Telegram chat:',
+                'check_stage': '👀 Is everything correct?',
                 'approve_stage': '✨ Data successfully added!',
                 'settings_stage': '⚙️ Settings:',
                 'language_choose_stage': '🌐 Select language:',
-                'language_change_stage': '✅ Language updated!'
+                'language_change_stage': '✅ Language successfully changed!'
             },
-            'ru' : {
+            'ru': {
                 'menu_stage': '👇 Выберите действие:',
                 'resume_stage': '📊 Ваша сводка:',
-                'make_note_stage': '📥 Выберите источник:',
-                'source_stage' : '🔢 Введите количество сообщений:',
                 'shift_stage': '🕒 Выберите смену:',
-                'message_counter_stage': '👀 Всё верно?',
-                'approve_stage' : '✨ Данные успешно добавлены!',
+                'counter_stage_1': '🔢 Укажите количество сообщений для Amo:',
+                'counter_stage_2': '🔢 Укажите количество сообщений для Telegram чата:',
+                'check_stage': '👀 Всё верно?',
+                'approve_stage': '✨ Данные успешно добавлены!',
                 'settings_stage': '⚙️ Настройки:',
                 'language_choose_stage': '🌐 Выберите язык:',
                 'language_change_stage': '✅ Язык успешно изменён!'
             }
         }
+        self.date = {
+            'eng': {
+
+            },
+            'ru': {
+
+            }
+        }
+
         self.stage = {
             'menu_stage': {
                 'buttons': ['make_note', 'resume', 'settings'],
                 'transition': {
-                    'make_note': 'make_note_stage',
+                    'make_note': 'shift_stage',
                     'resume': 'resume_stage',
                     'settings': 'settings_stage'
                 },
@@ -102,41 +111,39 @@ class StorageManager:
                 'buttons': None,
                 'message': 'language_change_stage'
             },
-            'make_note_stage': {
-                'buttons':  ['amo', 'tg', 'back', 'from_scratch'],
-                'transition': {
-                    'amo': 'shift_stage',
-                    'tg': 'shift_stage',
-                    'back': 'menu_stage',
-                },
-                'message': 'make_note_stage'
-            },
             'shift_stage': {
                 'buttons': ['morning', 'day', 'evening', 'night', 'back', 'from_scratch'],
                 'transition' : {
-                    'morning': 'source_stage',
-                    'day': 'source_stage',
-                    'evening': 'source_stage',
-                    'night': 'source_stage',
-                    'back': 'make_note_stage'
+                    'morning': 'counter_stage_1',
+                    'day': 'counter_stage_1',
+                    'evening': 'counter_stage_1',
+                    'night': 'counter_stage_1',
+                    'back': 'menu_stage'
                 },
                 'message': 'shift_stage'
             },
-            'source_stage': {
+            'counter_stage_1': {
                 'buttons':  ['digits', 'back', 'from_scratch'],
                 'transition': {
-                    'digits': 'message_counter_stage',
-                    'back': 'shift_stage'
+                    'digits': 'counter_stage_2',
+                    'back': 'shift_stage',
                 },
-                'message': 'source_stage'
+                'message': 'counter_stage_1'
             },
-
-            'message_counter_stage': {
+            'counter_stage_2': {
+                'buttons':  ['digits', 'back', 'from_scratch'],
+                'transition': {
+                    'digits': 'check_stage',
+                    'back': 'counter_stage_1'
+                },
+                'message': 'counter_stage_2'
+            },
+            'check_stage': {
                 'buttons':  ['approve', 'back', 'from_scratch'],
                 'transition' : {
                     'approve': 'approve_stage'
                 },
-                'message': 'message_counter_stage'
+                'message': 'check_stage'
             },
             'approve_stage' : {
                 'buttons': None,

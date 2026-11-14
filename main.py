@@ -12,9 +12,8 @@ bot = telebot.TeleBot(API_TOKEN)
 
 chat_data = {}
 
-# Handle '/start' and '/help'
 @bot.message_handler(commands=['start'])
-def menu(message):
+def menu_stage(message):
     chat_id = message.chat.id
     user = UserManager()
     chat_data[chat_id] = user
@@ -57,7 +56,7 @@ def cancel(message):
 @bot.message_handler(func=lambda message: u.stage_manager(chat_data[message.chat.id].get_stage(),
                                                            message.text, 'resume_stage',
                                                            chat_data[message.chat.id].get_language()))
-def resume(message):
+def resume_stage(message):
     chat_id = message.chat.id
     user = chat_data[chat_id]
     user.push_stage('resume_stage')
@@ -70,7 +69,7 @@ def resume(message):
 @bot.message_handler(func=lambda message: u.stage_manager(chat_data[message.chat.id].get_stage(),
                                                       message.text, 'settings_stage',
                                                            chat_data[message.chat.id].get_language()))
-def settings(message):
+def settings_stage(message):
     chat_id = message.chat.id
     user = chat_data[chat_id]
     user.push_stage('settings_stage')
@@ -81,7 +80,7 @@ def settings(message):
 @bot.message_handler(func=lambda message: u.stage_manager(chat_data[message.chat.id].get_stage(),
                                                            message.text, 'language_choose_stage',
                                                            chat_data[message.chat.id].get_language()))
-def language_choose(message):
+def language_choose_stage(message):
     chat_id = message.chat.id
     user = chat_data[chat_id]
     user.push_stage('language_choose_stage')
@@ -93,7 +92,7 @@ def language_choose(message):
 @bot.message_handler(func=lambda message: u.stage_manager(chat_data[message.chat.id].get_stage(),
                                                            message.text, 'language_change_stage',
                                                            chat_data[message.chat.id].get_language()))
-def language_change(message):
+def language_change_stage(message):
     chat_id = message.chat.id
     user = chat_data[chat_id]
     user.push_stage('language_change_stage')
@@ -106,36 +105,23 @@ def language_change(message):
 
 
 @bot.message_handler(func=lambda message: u.stage_manager(chat_data[message.chat.id].get_stage(),
-                                                          message.text, 'make_note_stage',
+                                                          message.text, 'shift_stage',
                                                            chat_data[message.chat.id].get_language()))
-def make_note(message):
-    chat_id = message.chat.id
-    user = chat_data[chat_id]
-    user.push_stage('make_note_stage')
-    markup = u.button_creator(user.get_stage(), user.get_language())
-    #user.print_stage()
-    bot.send_message(chat_id, u.message_writer(user.get_stage(), user.get_language()), reply_markup=markup)
-
-@bot.message_handler(func=lambda message: u.stage_manager(chat_data[message.chat.id].get_stage(),
-                                                           message.text, 'shift_stage',
-                                                           chat_data[message.chat.id].get_language()))
-def shift(message):
+def shift_stage(message):
     chat_id = message.chat.id
     user = chat_data[chat_id]
     user.push_stage('shift_stage')
-    user.add_data('source', message.text)
     markup = u.button_creator(user.get_stage(), user.get_language())
     #user.print_stage()
     bot.send_message(chat_id, u.message_writer(user.get_stage(), user.get_language()), reply_markup=markup)
 
-
 @bot.message_handler(func=lambda message: u.stage_manager(chat_data[message.chat.id].get_stage(),
-                                                           message.text, 'source_stage',
+                                                           message.text, 'counter_stage_1',
                                                            chat_data[message.chat.id].get_language()))
-def source(message):
+def counter_stage_1(message):
     chat_id = message.chat.id
     user = chat_data[chat_id]
-    user.push_stage('source_stage')
+    user.push_stage('counter_stage_1')
     user.add_data('shift', message.text)
     markup = u.button_creator(user.get_stage(), user.get_language())
     #user.print_stage()
@@ -143,19 +129,32 @@ def source(message):
 
 
 @bot.message_handler(func=lambda message: u.stage_manager(chat_data[message.chat.id].get_stage(),
-                                                           message.text, 'message_counter_stage',
+                                                           message.text, 'counter_stage_2',
                                                            chat_data[message.chat.id].get_language()))
-def message_counter(message):
+def counter_stage_2(message):
     chat_id = message.chat.id
     user = chat_data[chat_id]
-    user.push_stage('message_counter_stage')
-    user.add_data('message_counter', message.text)
+    user.push_stage('counter_stage_2')
+    user.add_data('counter_stage_1', message.text)
     markup = u.button_creator(user.get_stage(), user.get_language())
     #user.print_stage()
     bot.send_message(chat_id, u.message_writer(user.get_stage(), user.get_language()), reply_markup=markup)
 
-    res = (f'user: {message.chat.username}, source: {user.get_data('source')}, '
-           f'shift: {user.get_data('shift')}, messages: {user.get_data('message_counter')}')
+
+@bot.message_handler(func=lambda message: u.stage_manager(chat_data[message.chat.id].get_stage(),
+                                                           message.text, 'check_stage',
+                                                           chat_data[message.chat.id].get_language()))
+def check_stage(message):
+    chat_id = message.chat.id
+    user = chat_data[chat_id]
+    user.push_stage('check_stage')
+    user.add_data('counter_stage_2', message.text)
+    markup = u.button_creator(user.get_stage(), user.get_language())
+    #user.print_stage()
+    bot.send_message(chat_id, u.message_writer(user.get_stage(), user.get_language()), reply_markup=markup)
+
+    res = (f'user: {message.chat.username}, shift: {user.get_data('shift')}, '
+           f'amo: {user.get_data('counter_stage_1')}, tg: {user.get_data('counter_stage_2')}')
     bot.send_message(chat_id, res)
 
 
@@ -167,31 +166,14 @@ def approve(message):
     user = chat_data[chat_id]
     user.push_stage('approve_stage')
     #user.print_stage()
-    database.insert_data(user.get_user_id(), user.get_data('source'), user.get_data('shift'), user.get_data('message_counter'))
+    database.insert_data(user.get_user_id(), user.get_data('shift'),
+                         user.get_data('counter_stage_1'), user.get_data('counter_stage_2'))
     bot.send_message(chat_id, u.message_writer(user.get_stage(), user.get_language()))
-    return menu(message)
+    return menu_stage(message)
 
-@bot.message_handler()
+@bot.message_handler(func=lambda message: True)
 def trash(message):
     chat_id = message.chat.id
     bot.send_message(chat_id, 'Error')
 
 bot.infinity_polling()
-
-#TODO Добавить счетчик смен
-#TODO Вывод сводки в pdf формате (Выделить жирным дата, источник, время суток)
-#TODO Написать доку для пользователей
-#TODO Реализовать редактирование записей
-#TODO Исправить в managers get_button_id проверку на in
-
-#DONE Добавить утро, день, вечер и ночь после выбора источника
-#Done Добавить больше 10 сообщений
-#DONE Подумать над названиями кнопок и добавить эмодзи
-#DONE Добавить аватарку и описание
-#DONE Переписать движение по меню на СТЕК
-#DONE Сделать клавиши в ряд а не списком
-#DONE Закинуть бота на клауд
-#DONE Переписать кнопки на словарь словарей (user_buttons и service buttons)
-#DONE Переписать юзера на класс
-#DONE Добавить вкладку настроек
-#DONE Добавить поддержку нескольких языков

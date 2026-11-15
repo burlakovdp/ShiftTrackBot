@@ -161,7 +161,7 @@ def check_stage(message):
 @bot.message_handler(func=lambda message: u.stage_manager(chat_data[message.chat.id].get_stage(),
                                                            message.text, 'approve_stage',
                                                            chat_data[message.chat.id].get_language()))
-def approve(message):
+def approve_stage(message):
     chat_id = message.chat.id
     user = chat_data[chat_id]
     user.push_stage('approve_stage')
@@ -172,8 +172,13 @@ def approve(message):
     return menu_stage(message)
 
 @bot.message_handler(func=lambda message: True)
-def trash(message):
+def wrong_input_stage(message):
     chat_id = message.chat.id
-    bot.send_message(chat_id, 'Error')
+    user = chat_data[chat_id]
+    user.push_stage('wrong_input_stage')
+    bot.send_message(chat_id, u.message_writer(user.get_stage(), user.get_language()))
+    user.pop_stage()
+    markup = u.button_creator(user.get_stage(), user.get_language())
+    bot.send_message(chat_id, u.message_writer(user.get_stage(), user.get_language()), reply_markup=markup)
 
 bot.infinity_polling()

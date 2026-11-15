@@ -44,28 +44,30 @@ class StorageManager:
         }
         self.message = {
             'eng': {
-                'menu_stage': '👇 Select an action:',
-                'resume_stage': '📊 Your summary:',
-                'shift_stage': '🕒 Select a shift:',
-                'counter_stage_1': '🔢 Enter the number of messages for Amo:',
-                'counter_stage_2': '🔢 Enter the number of messages for Telegram chat:',
-                'check_stage': '👀 Is everything correct?',
-                'approve_stage': '✨ Data successfully added!',
-                'settings_stage': '⚙️ Settings:',
-                'language_choose_stage': '🌐 Select language:',
-                'language_change_stage': '✅ Language successfully changed!'
+                'menu_stage': '🧭 What would you like to do?',
+                'resume_stage': '📊 Here is your summary:',
+                'shift_stage': '🕒 Choose your shift:',
+                'counter_stage_1': '💬 How many messages did you handle in Amo?',
+                'counter_stage_2': '✈️ And how many in Telegram chat?',
+                'check_stage': '👀 Let’s double-check — does everything look right?',
+                'approve_stage': '🎉 Awesome! Your data has been saved.',
+                'settings_stage': '⚙️ Here are your settings:',
+                'language_choose_stage': '🌐 Which language do you prefer?',
+                'language_change_stage': '✅ Done! Language updated.',
+                'wrong_input_stage': '🤔 Hmm, I didn’t quite get that. Could you try entering it again?'
             },
             'ru': {
-                'menu_stage': '👇 Выберите действие:',
-                'resume_stage': '📊 Ваша сводка:',
-                'shift_stage': '🕒 Выберите смену:',
-                'counter_stage_1': '🔢 Укажите количество сообщений для Amo:',
-                'counter_stage_2': '🔢 Укажите количество сообщений для Telegram чата:',
-                'check_stage': '👀 Всё верно?',
-                'approve_stage': '✨ Данные успешно добавлены!',
-                'settings_stage': '⚙️ Настройки:',
-                'language_choose_stage': '🌐 Выберите язык:',
-                'language_change_stage': '✅ Язык успешно изменён!'
+                'menu_stage': '🧭 Выбери нужное действие:',
+                'resume_stage': '📊 Вот твоя сводка:',
+                'shift_stage': '🕒 Укажи смену:',
+                'counter_stage_1': '💬 Сколько сообщений было в Amo?',
+                'counter_stage_2': '✈️ А сколько сообщений в Telegram-чате?',
+                'check_stage': '👀 Давай проверим — всё верно?',
+                'approve_stage': '🎉 Супер! Данные успешно сохранены.',
+                'settings_stage': '⚙️ Вот твои настройки:',
+                'language_choose_stage': '🌐 Какой язык тебе удобнее?',
+                'language_change_stage': '✅ Готово! Язык изменён.',
+                'wrong_input_stage': '🤔 Хм, кажется, что-то пошло не так. Попробуй ввести ещё раз!'
             }
         }
         self.date = {

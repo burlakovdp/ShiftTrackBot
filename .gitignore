@@ -13,3 +13,4 @@ identifier.sqlite
 .*
 Pipfile
 todo.md
+*.pdf

@@ -6,8 +6,6 @@ class StorageManager:
             'eng': {
                 'make_note': '📝 Add note',
                 'resume': '📊 Summary',
-                'amo': 'Amo',
-                'tg': 'Telegram',
                 'approve': '✅ Yes',
                 'back': '🔙 Back',
                 'from_scratch': '🏠 Main menu',
@@ -25,8 +23,6 @@ class StorageManager:
             'ru' : {
                 'make_note': '📝 Сделать запись',
                 'resume': '📊 Сводка',
-                'amo': 'Амо',
-                'tg': 'Чат в телеграме',
                 'approve': '✅ Да',
                 'back': '🔙 Назад',
                 'from_scratch': '🏠 Вернуться в начало',
@@ -72,14 +68,7 @@ class StorageManager:
                 'wrong_input_stage_no_start': 'Похоже, мы ещё не начали! Напиши /start, чтобы запустить бота.'
             }
         }
-        self.date = {
-            'eng': {
 
-            },
-            'ru': {
-
-            }
-        }
         self.stage = {
             'menu_stage': {
                 'buttons': ['make_note', 'resume', 'settings'],
@@ -235,7 +224,7 @@ class UserManager:
         return self.stages.size()
 
     def stage_is_empty(self):
-        return self.stage.is_empty()
+        return self.stages.is_empty()
 
     def print_stage(self):
         print(self.get_stage())

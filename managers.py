@@ -54,7 +54,8 @@ class StorageManager:
                 'settings_stage': '⚙️ Here are your settings:',
                 'language_choose_stage': '🌐 Which language do you prefer?',
                 'language_change_stage': '✅ Done! Language updated.',
-                'wrong_input_stage': '🤔 Hmm, I didn’t quite get that. Could you try entering it again?'
+                'wrong_input_stage': '🤔 Hmm, I didn’t quite get that. Could you try entering it again?',
+                'wrong_input_stage_no_start': "Looks like we haven't started yet! Type /start to begin."
             },
             'ru': {
                 'menu_stage': '🧭 Выбери нужное действие:',
@@ -67,7 +68,8 @@ class StorageManager:
                 'settings_stage': '⚙️ Вот твои настройки:',
                 'language_choose_stage': '🌐 Какой язык тебе удобнее?',
                 'language_change_stage': '✅ Готово! Язык изменён.',
-                'wrong_input_stage': '🤔 Хм, кажется, что-то пошло не так. Попробуй ввести ещё раз!'
+                'wrong_input_stage': '🤔 Хм, кажется, что-то пошло не так. Попробуй ввести ещё раз!',
+                'wrong_input_stage_no_start': 'Похоже, мы ещё не начали! Напиши /start, чтобы запустить бота.'
             }
         }
         self.date = {
@@ -78,7 +80,6 @@ class StorageManager:
 
             }
         }
-
         self.stage = {
             'menu_stage': {
                 'buttons': ['make_note', 'resume', 'settings'],
@@ -184,7 +185,10 @@ class StorageManager:
     def get_transition_stage(self, user_stage, user_button_id):
         return self.stage[user_stage]['transition'][user_button_id]
 
+
 class UserManager:
+    default_language = 'eng'
+
     def __init__(self):
         self.user_id = None
         self.data = {}
@@ -199,11 +203,21 @@ class UserManager:
     def get_data(self, key):
         return self.data[key]
 
+    @staticmethod
+    def get_default_language():
+        return UserManager.default_language
+
     def get_language(self):
-        return self.data['language']
+        try:
+            return self.data['language']
+        except:
+            return self.get_default_language()
 
     def get_user_id(self):
-        return self.user_id
+        try:
+            return self.user_id
+        except:
+            return None
 
     def push_stage(self, stage):
         self.stages.push(stage)
@@ -212,10 +226,16 @@ class UserManager:
         return self.stages.pop()
 
     def get_stage(self):
-        return self.stages.top()
+        try:
+            return self.stages.top()
+        except:
+            return None
 
     def get_size_stage(self):
         return self.stages.size()
+
+    def stage_is_empty(self):
+        return self.stage.is_empty()
 
     def print_stage(self):
         print(self.get_stage())

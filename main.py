@@ -7,7 +7,6 @@ from managers import UserManager
 import database
 
 API_TOKEN = TOKEN
-DEFAULT_LANGUAGE = 'eng'
 bot = telebot.TeleBot(API_TOKEN)
 
 chat_data = {}
@@ -23,7 +22,7 @@ def menu_stage(message):
     #TODO Ask professor
     user_language = database.read_user_language(user.get_user_id())
     if user_language is None:
-        user_language = DEFAULT_LANGUAGE
+        user_language = UserManager.get_default_language()
 
     user.add_data('language', user_language)
     #user.print_stage()
@@ -32,8 +31,8 @@ def menu_stage(message):
                                                 user.get_language()), reply_markup=markup)
 
 
-@bot.message_handler(func=lambda message: u.back_manager(chat_data[message.chat.id].get_stage(),
-                                                          message.text, chat_data[message.chat.id].get_language()))
+@bot.message_handler(func=lambda message: u.back_manager(u.save_get(chat_data, message.chat.id, UserManager.get_stage),
+                                                          message.text, u.save_get(chat_data, message.chat.id, UserManager.get_language)))
 def back(message):
     chat_id = message.chat.id
     user = chat_data[chat_id]
@@ -42,8 +41,8 @@ def back(message):
     bot.send_message(chat_id, u.message_writer(user.get_stage(), user.get_language()), reply_markup=markup)
 
 
-@bot.message_handler(func=lambda message: u.cancel_manager(chat_data[message.chat.id].get_stage(),
-                                                            message.text, chat_data[message.chat.id].get_language()))
+@bot.message_handler(func=lambda message: u.cancel_manager(u.save_get(chat_data, message.chat.id, UserManager.get_stage),
+                                                            message.text, u.save_get(chat_data, message.chat.id, UserManager.get_language)))
 def cancel(message):
     chat_id = message.chat.id
     user = chat_data[chat_id]
@@ -53,9 +52,9 @@ def cancel(message):
     bot.send_message(chat_id, u.message_writer(user.get_stage(), user.get_language()), reply_markup=markup)
 
 
-@bot.message_handler(func=lambda message: u.stage_manager(chat_data[message.chat.id].get_stage(),
+@bot.message_handler(func=lambda message: u.stage_manager(u.save_get(chat_data, message.chat.id, UserManager.get_stage),
                                                            message.text, 'resume_stage',
-                                                           chat_data[message.chat.id].get_language()))
+                                                            u.save_get(chat_data, message.chat.id, UserManager.get_language)))
 def resume_stage(message):
     chat_id = message.chat.id
     user = chat_data[chat_id]
@@ -66,9 +65,9 @@ def resume_stage(message):
     cancel(message)
 
 
-@bot.message_handler(func=lambda message: u.stage_manager(chat_data[message.chat.id].get_stage(),
+@bot.message_handler(func=lambda message: u.stage_manager(u.save_get(chat_data, message.chat.id, UserManager.get_stage),
                                                       message.text, 'settings_stage',
-                                                           chat_data[message.chat.id].get_language()))
+                                                           u.save_get(chat_data, message.chat.id, UserManager.get_language)))
 def settings_stage(message):
     chat_id = message.chat.id
     user = chat_data[chat_id]
@@ -77,9 +76,9 @@ def settings_stage(message):
     bot.send_message(chat_id, u.message_writer(user.get_stage(), user.get_language()), reply_markup=markup)
 
 
-@bot.message_handler(func=lambda message: u.stage_manager(chat_data[message.chat.id].get_stage(),
+@bot.message_handler(func=lambda message: u.stage_manager(u.save_get(chat_data, message.chat.id, UserManager.get_stage),
                                                            message.text, 'language_choose_stage',
-                                                           chat_data[message.chat.id].get_language()))
+                                                           u.save_get(chat_data, message.chat.id, UserManager.get_language)))
 def language_choose_stage(message):
     chat_id = message.chat.id
     user = chat_data[chat_id]
@@ -89,9 +88,9 @@ def language_choose_stage(message):
     bot.send_message(chat_id, u.message_writer(user.get_stage(), user.get_language()), reply_markup=markup)
 
 
-@bot.message_handler(func=lambda message: u.stage_manager(chat_data[message.chat.id].get_stage(),
+@bot.message_handler(func=lambda message: u.stage_manager(u.save_get(chat_data, message.chat.id, UserManager.get_stage),
                                                            message.text, 'language_change_stage',
-                                                           chat_data[message.chat.id].get_language()))
+                                                           u.save_get(chat_data, message.chat.id, UserManager.get_language)))
 def language_change_stage(message):
     chat_id = message.chat.id
     user = chat_data[chat_id]
@@ -104,9 +103,9 @@ def language_change_stage(message):
     cancel(message)
 
 
-@bot.message_handler(func=lambda message: u.stage_manager(chat_data[message.chat.id].get_stage(),
+@bot.message_handler(func=lambda message: u.stage_manager(u.save_get(chat_data, message.chat.id, UserManager.get_stage),
                                                           message.text, 'shift_stage',
-                                                           chat_data[message.chat.id].get_language()))
+                                                           u.save_get(chat_data, message.chat.id, UserManager.get_language)))
 def shift_stage(message):
     chat_id = message.chat.id
     user = chat_data[chat_id]
@@ -115,9 +114,9 @@ def shift_stage(message):
     #user.print_stage()
     bot.send_message(chat_id, u.message_writer(user.get_stage(), user.get_language()), reply_markup=markup)
 
-@bot.message_handler(func=lambda message: u.stage_manager(chat_data[message.chat.id].get_stage(),
+@bot.message_handler(func=lambda message: u.stage_manager(u.save_get(chat_data, message.chat.id, UserManager.get_stage),
                                                            message.text, 'counter_stage_1',
-                                                           chat_data[message.chat.id].get_language()))
+                                                           u.save_get(chat_data, message.chat.id, UserManager.get_language)))
 def counter_stage_1(message):
     chat_id = message.chat.id
     user = chat_data[chat_id]
@@ -128,9 +127,9 @@ def counter_stage_1(message):
     bot.send_message(chat_id, u.message_writer(user.get_stage(), user.get_language()), reply_markup=markup)
 
 
-@bot.message_handler(func=lambda message: u.stage_manager(chat_data[message.chat.id].get_stage(),
+@bot.message_handler(func=lambda message: u.stage_manager(u.save_get(chat_data, message.chat.id, UserManager.get_stage),
                                                            message.text, 'counter_stage_2',
-                                                           chat_data[message.chat.id].get_language()))
+                                                           u.save_get(chat_data, message.chat.id, UserManager.get_language)))
 def counter_stage_2(message):
     chat_id = message.chat.id
     user = chat_data[chat_id]
@@ -141,9 +140,9 @@ def counter_stage_2(message):
     bot.send_message(chat_id, u.message_writer(user.get_stage(), user.get_language()), reply_markup=markup)
 
 
-@bot.message_handler(func=lambda message: u.stage_manager(chat_data[message.chat.id].get_stage(),
+@bot.message_handler(func=lambda message: u.stage_manager(u.save_get(chat_data, message.chat.id, UserManager.get_stage),
                                                            message.text, 'check_stage',
-                                                           chat_data[message.chat.id].get_language()))
+                                                           u.save_get(chat_data, message.chat.id, UserManager.get_language)))
 def check_stage(message):
     chat_id = message.chat.id
     user = chat_data[chat_id]
@@ -158,9 +157,9 @@ def check_stage(message):
     bot.send_message(chat_id, res)
 
 
-@bot.message_handler(func=lambda message: u.stage_manager(chat_data[message.chat.id].get_stage(),
+@bot.message_handler(func=lambda message: u.stage_manager(u.save_get(chat_data, message.chat.id, UserManager.get_stage),
                                                            message.text, 'approve_stage',
-                                                           chat_data[message.chat.id].get_language()))
+                                                           u.save_get(chat_data, message.chat.id, UserManager.get_language)))
 def approve_stage(message):
     chat_id = message.chat.id
     user = chat_data[chat_id]
@@ -174,11 +173,15 @@ def approve_stage(message):
 @bot.message_handler(func=lambda message: True)
 def wrong_input_stage(message):
     chat_id = message.chat.id
-    user = chat_data[chat_id]
-    user.push_stage('wrong_input_stage')
-    bot.send_message(chat_id, u.message_writer(user.get_stage(), user.get_language()))
-    user.pop_stage()
-    markup = u.button_creator(user.get_stage(), user.get_language())
-    bot.send_message(chat_id, u.message_writer(user.get_stage(), user.get_language()), reply_markup=markup)
+    user = chat_data.get(chat_id)
+    if isinstance(user, UserManager):
+        user.push_stage('wrong_input_stage')
+        bot.send_message(chat_id, u.message_writer(user.get_stage(), user.get_language()))
+        user.pop_stage()
+        markup = u.button_creator(user.get_stage(), user.get_language())
+        bot.send_message(chat_id, u.message_writer(user.get_stage(), user.get_language()), reply_markup=markup)
+    else:
+        bot.send_message(chat_id, u.message_writer('wrong_input_stage_no_start', UserManager.get_default_language()))
+
 
 bot.infinity_polling()

@@ -40,7 +40,7 @@ def update_user_language(user_id, language):
 def read(user_id):
     conn = sqlite3.connect("data.db")
     cur = conn.cursor()
-    cur.execute("SELECT class_type, counter_messages, date "
+    cur.execute("SELECT shift, counter_amo, date "
                 "FROM class"
                 " WHERE user_id = ?", (user_id,))
     res = cur.fetchall()

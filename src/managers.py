@@ -38,6 +38,7 @@ class StorageManager:
                 'night': 'Ночь'
             }
         }
+
         self.message = {
             'eng': {
                 'menu_stage': '🧭 What would you like to do?',
@@ -143,6 +144,16 @@ class StorageManager:
             }
         }
 
+        self.pdf_assets = {
+            'eng': {
+                'head' : ('Date', 'Shift', 'Amo', 'Tg'),
+                'title' : 'Summery'
+            },
+            'ru': {
+
+            }
+        }
+
     def get_message(self, user_stage, user_lang):
         return self.message[user_lang][user_stage]
 
@@ -173,6 +184,12 @@ class StorageManager:
 
     def get_transition_stage(self, user_stage, user_button_id):
         return self.stage[user_stage]['transition'][user_button_id]
+
+    def get_pdf_head(self, language):
+        return self.pdf_assets[language]['head']
+
+    def get_pdf_title(self, language):
+        return self.pdf_assets[language]['title']
 
 
 class UserManager:

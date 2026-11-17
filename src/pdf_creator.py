@@ -31,14 +31,10 @@ class PDF(FPDF):
         self.doc_title = title
 
 def pdf_creator(user_id, title, data):
-    head = [('Date', 'Shift', 'Amo', 'Tg')]
-    data.reverse()
-    data = head + data
     pdf = PDF()
     pdf.set_doc_title(title)
     pdf.add_page()
     pdf.set_font("PageFont", size=12)
-    print(data)
     with pdf.table() as table:
         for data_row in data:
             row = table.row()

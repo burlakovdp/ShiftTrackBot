@@ -4,6 +4,7 @@ from telebot import types
 import os
 import dotenv
 
+from src.managers import storage
 from src.managers import UserManager
 from src import database, utils as u
 from src.pdf_creator import pdf_creator
@@ -62,8 +63,11 @@ def resume_stage(message):
     user = chat_data[chat_id]
     user.push_stage('resume_stage')
     bot.send_message(chat_id, u.message_writer(user.get_stage(), user.get_language()))
-    #user.print_stage()
-    file_path = pdf_creator(user.get_user_id(), 'Summery', database.read(user.get_user_id()))
+
+    data = [storage.get_pdf_head(user.get_language())] + database.read(user.get_user_id())[::-1]
+
+    file_path = pdf_creator(user.get_user_id(), storage.get_pdf_title(user.get_language()),data)
+
     with open(file_path, "rb") as pdf_file:
         bot.send_document(chat_id, pdf_file)
     cancel(message)

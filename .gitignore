@@ -8,10 +8,10 @@ src/config.py
 .env.*
 .idea
 .project
-data*
 data/identifier.sqlite
 .*
 Pipfile
 todo.md
 *.pdf
 output
+data

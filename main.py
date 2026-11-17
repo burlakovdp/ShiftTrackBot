@@ -1,13 +1,15 @@
 import telebot
 from telebot import types
-from src.config import TOKEN
+
+import os
+import dotenv
 
 from src.managers import UserManager
 from src import database, utils as u
 from src.pdf_creator import pdf_creator
 
-API_TOKEN = TOKEN
-bot = telebot.TeleBot(API_TOKEN)
+dotenv.load_dotenv()
+bot = telebot.TeleBot(os.getenv('TOKEN'))
 
 chat_data = {}
 

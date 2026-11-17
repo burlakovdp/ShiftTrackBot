@@ -61,8 +61,10 @@ def language_change(user_input, user_lang):
 
 def data_transformer(data):
     res = []
+    counter = 1
     for e in data[::-1]:
         date = pendulum.parse(e[0], tz='Europe/Paris').format('DD/MM/YYYY')
         day = pendulum.parse(e[0], tz='Europe/Paris').format('dddd')
-        res.append((date, day, e[1], e[2], e[3]))
+        res.append((counter, date, day, e[1], e[2], e[3]))
+        counter += 1
     return res

@@ -1,14 +1,11 @@
 import sqlite3
-from datetime import datetime
-from zoneinfo import ZoneInfo
+import pendulum
 
 DATABASE = "data/data.db"
 
 def insert_data(user_id, shift, message_counter_1, message_counter_2):
 
-    nice_tz = ZoneInfo("Europe/Paris")
-
-    day = datetime.now(nice_tz).date().isoformat()
+    day = pendulum.now(tz='Europe/Paris').format('DD/MM/YYYY')
 
     conn = sqlite3.connect(DATABASE)
     cur = conn.cursor()

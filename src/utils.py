@@ -61,14 +61,3 @@ def language_change(user_input, user_lang):
 def date_transformer(date):
     tmp = date.split('-')
     return f'{tmp[1]}/{tmp[2]}/{tmp[0]}'
-
-def msg_creator(data):
-    res = []
-    for e in data:
-        res.append(f'Дата: {date_transformer(e[2])}\n'
-                   f'Количество вопросов: {e[1]}\n'
-                   f'Источник: {e[0]}\n'
-                   f'---')
-    if not res:
-        return 'No data'
-    return '\n'.join(res)

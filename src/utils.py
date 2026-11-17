@@ -1,5 +1,6 @@
 from telebot import types
 from src.managers import storage
+import pendulum
 
 def button_creator(user_stage, user_lang):
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=2)
@@ -58,6 +59,10 @@ def language_change(user_input, user_lang):
     else:
         return 'ru'
 
-def date_transformer(date):
-    tmp = date.split('-')
-    return f'{tmp[1]}/{tmp[2]}/{tmp[0]}'
+def data_transformer(data):
+    res = []
+    for e in data[::-1]:
+        date = pendulum.parse(e[0], tz='Europe/Paris').format('DD/MM/YYYY')
+        day = pendulum.parse(e[0], tz='Europe/Paris').format('dddd')
+        res.append((date, day, e[1], e[2], e[3]))
+    return res

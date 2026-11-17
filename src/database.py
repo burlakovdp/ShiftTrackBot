@@ -5,7 +5,7 @@ DATABASE = "data/data.db"
 
 def insert_data(user_id, shift, message_counter_1, message_counter_2):
 
-    day = pendulum.now(tz='Europe/Paris').format('DD/MM/YYYY')
+    day = pendulum.now("UTC").format("YYYY-MM-DD HH:mm:ss")
 
     conn = sqlite3.connect(DATABASE)
     cur = conn.cursor()

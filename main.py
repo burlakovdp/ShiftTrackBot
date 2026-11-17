@@ -64,7 +64,7 @@ def resume_stage(message):
     user.push_stage('resume_stage')
     bot.send_message(chat_id, u.message_writer(user.get_stage(), user.get_language()))
 
-    data = [storage.get_pdf_head(user.get_language())] + database.read(user.get_user_id())[::-1]
+    data = [storage.get_pdf_head(user.get_language())] + u.data_transformer(database.read(user.get_user_id()))
 
     file_path = pdf_creator(user.get_user_id(), storage.get_pdf_title(user.get_language()),data)
 

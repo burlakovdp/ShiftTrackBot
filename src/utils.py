@@ -1,5 +1,5 @@
 from telebot import types
-from managers import storage
+from src.managers import storage
 
 def button_creator(user_stage, user_lang):
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=2)

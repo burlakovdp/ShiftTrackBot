@@ -4,13 +4,14 @@ __pycache__/
 .vscode/
 .DS_Store
 .zed
-config.py
+src/config.py
 .env.*
 .idea
 .project
 data*
-identifier.sqlite
+data/identifier.sqlite
 .*
 Pipfile
 todo.md
 *.pdf
+output

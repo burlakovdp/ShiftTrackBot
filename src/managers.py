@@ -1,4 +1,4 @@
-from stack import Stack
+from src.stack import Stack
 
 class StorageManager:
     def __init__(self):
@@ -203,10 +203,7 @@ class UserManager:
             return self.get_default_language()
 
     def get_user_id(self):
-        try:
-            return self.user_id
-        except:
-            return None
+        return self.user_id
 
     def push_stage(self, stage):
         self.stages.push(stage)

@@ -1,10 +1,10 @@
 import telebot
 from telebot import types
-from config import TOKEN
+from src.config import TOKEN
 
-import utils as u
-from managers import UserManager
-import database
+from src.managers import UserManager
+from src import database, utils as u
+from src.pdf_creator import pdf_creator
 
 API_TOKEN = TOKEN
 bot = telebot.TeleBot(API_TOKEN)
@@ -61,7 +61,9 @@ def resume_stage(message):
     user.push_stage('resume_stage')
     bot.send_message(chat_id, u.message_writer(user.get_stage(), user.get_language()))
     #user.print_stage()
-    bot.send_message(chat_id, u.msg_creator(database.read(user.get_user_id())))
+    file_path = pdf_creator(user.get_user_id(), 'Summery', database.read(user.get_user_id()))
+    with open(file_path, "rb") as pdf_file:
+        bot.send_document(chat_id, pdf_file)
     cancel(message)
 
 

@@ -63,8 +63,9 @@ def data_transformer(data):
     res = []
     counter = 1
     for e in data[::-1]:
-        date = pendulum.parse(e[0], tz='Europe/Paris').format('DD/MM/YYYY')
-        day = pendulum.parse(e[0], tz='Europe/Paris').format('dddd')
-        res.append((counter, date, day, e[1], e[2], e[3]))
+        utc_time = pendulum.parse(e[0])
+        paris_date = utc_time.in_tz('Europe/Paris').format('DD/MM/YYYY')
+        day = pendulum.from_format(paris_date, 'DD/MM/YYYY').format('dddd')
+        res.append((counter, paris_date, day, e[1], e[2], e[3]))
         counter += 1
     return res

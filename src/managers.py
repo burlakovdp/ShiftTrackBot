@@ -146,7 +146,7 @@ class StorageManager:
 
         self.pdf_assets = {
             'eng': {
-                'head': ('#', 'Date', 'Day', 'Shift', 'Amo', 'Telegram сhat'),
+                'head': ('#', 'Date', 'Day', 'Shift', 'Amo', 'Telegram chat'),
                 'title': 'Summary'
             },
             'ru': {

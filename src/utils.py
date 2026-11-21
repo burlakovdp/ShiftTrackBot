@@ -71,6 +71,6 @@ def data_transformer(data, user_lang):
         utc_time = pendulum.parse(e[0])
         paris_date = utc_time.in_tz('Europe/Paris').format('DD/MM/YYYY')
         day = pendulum.from_format(paris_date, 'DD/MM/YYYY').format('dddd', locale=user_lang).title()
-        res.append((counter, paris_date, day, storage.get_button_name(user_lang, e[1]), e[2], e[3]))
+        res.append((counter, paris_date, day, storage.get_button_name(user_lang, e[1])[2:], e[2], e[3]))
         counter += 1
     return res

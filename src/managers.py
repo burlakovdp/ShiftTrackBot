@@ -13,29 +13,29 @@ class StorageManager:
                 'lang_change': '🌐 Change language',
                 'ru_button': '🇷🇺 Русский',
                 'en_button': '🇬🇧 English',
-                'morning': 'Morning',
-                'day': 'Day',
-                'evening': 'Evening',
-                'night': 'Night',
-                'back': '🔙 Back',
+                'morning': '🌅 Morning',
+                'day': '☀ Day',
+                'evening': '🌇 Evening',
+                'night': '🌙 Night',
+                'back': '⬅️ Back',
                 'from_scratch': '🏠 Main menu'
             },
             'ru' : {
                 'make_note': '📝 Сделать запись',
                 'resume': '📊 Сводка',
                 'approve': '✅ Да',
-                'back': '🔙 Назад',
-                'from_scratch': '🏠 Вернуться в начало',
+                'back': '⬅️ Назад',
+                'from_scratch': '🏠 Главное меню',
                 'digits': ['0','1','2','3','4','5', '6', '7', '8', '9',
                            '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20'],
                 'settings': '⚙️ Настройки',
                 'lang_change': '🌐 Смена языка',
                 'ru_button': '🇷🇺 Русский',
                 'en_button': '🇬🇧 English',
-                'morning': 'Утро',
-                'day': 'День',
-                'evening': 'Вечер',
-                'night': 'Ночь'
+                'morning': '🌅 Утро',
+                'day': '☀ День',
+                'evening': '🌇 Вечер',
+                'night': '🌙 Ночь'
             }
         }
 

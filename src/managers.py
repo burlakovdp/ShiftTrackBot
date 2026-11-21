@@ -7,8 +7,6 @@ class StorageManager:
                 'make_note': '📝 Add note',
                 'resume': '📊 Summary',
                 'approve': '✅ Yes',
-                'back': '🔙 Back',
-                'from_scratch': '🏠 Main menu',
                 'digits': ['0','1','2','3','4','5', '6', '7', '8', '9',
                            '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20'],
                 'settings': '⚙️ Settings',
@@ -18,7 +16,9 @@ class StorageManager:
                 'morning': 'Morning',
                 'day': 'Day',
                 'evening': 'Evening',
-                'night': 'Night'
+                'night': 'Night',
+                'back': '🔙 Back',
+                'from_scratch': '🏠 Main menu'
             },
             'ru' : {
                 'make_note': '📝 Сделать запись',
@@ -80,13 +80,13 @@ class StorageManager:
                 },
                 'message': 'menu_stage'
             },
-            'resume_stage' : {
+            'resume_stage': {
                 'buttons': None,
                 'next_stage': None,
                 'message': 'resume_stage'
             },
             'settings_stage': {
-                'buttons': ['back', 'lang_change'],
+                'buttons': ['lang_change', 'back'],
                 'transition': {
                     'lang_change': 'language_choose_stage'
                 },
@@ -116,7 +116,7 @@ class StorageManager:
                 'message': 'shift_stage'
             },
             'counter_stage_1': {
-                'buttons':  ['digits', 'back', 'from_scratch'],
+                'buttons': ['back', 'from_scratch', 'digits'],
                 'transition': {
                     'digits': 'counter_stage_2',
                     'back': 'shift_stage',
@@ -124,7 +124,7 @@ class StorageManager:
                 'message': 'counter_stage_1'
             },
             'counter_stage_2': {
-                'buttons':  ['digits', 'back', 'from_scratch'],
+                'buttons': ['back', 'from_scratch', 'digits'],
                 'transition': {
                     'digits': 'check_stage',
                     'back': 'counter_stage_1'
@@ -132,7 +132,7 @@ class StorageManager:
                 'message': 'counter_stage_2'
             },
             'check_stage': {
-                'buttons':  ['approve', 'back', 'from_scratch'],
+                'buttons': ['back','from_scratch', 'approve'],
                 'transition' : {
                     'approve': 'approve_stage'
                 },
@@ -160,14 +160,15 @@ class StorageManager:
 
     def get_buttons_names(self, user_stage, user_lang):
         stage_buttons_id = self.stage[user_stage]['buttons']
+        all_buttons = self.buttons[user_lang]
         try:
             res = []
-            for id_button in self.buttons[user_lang]:
-                if id_button in stage_buttons_id:
-                    if type(self.buttons[user_lang][id_button]) == list:
-                        res.extend(self.buttons[user_lang][id_button])
+            for id_button in stage_buttons_id:
+                if id_button in all_buttons:
+                    if type(all_buttons[id_button]) == list:
+                        res.extend(all_buttons[id_button])
                     else:
-                        res.append(self.buttons[user_lang][id_button])
+                        res.append(all_buttons[id_button])
             return res
         except:
             return None

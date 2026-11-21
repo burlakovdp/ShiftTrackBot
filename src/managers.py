@@ -3,7 +3,7 @@ from src.stack import Stack
 class StorageManager:
     def __init__(self):
         self.buttons = {
-            'eng': {
+            'en': {
                 'make_note': '📝 Add note',
                 'resume': '📊 Summary',
                 'approve': '✅ Yes',
@@ -11,8 +11,8 @@ class StorageManager:
                            '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20'],
                 'settings': '⚙️ Settings',
                 'lang_change': '🌐 Change language',
-                'rus_button': '🇷🇺 Русский',
-                'eng_button': '🇬🇧 English',
+                'ru_button': '🇷🇺 Русский',
+                'en_button': '🇬🇧 English',
                 'morning': 'Morning',
                 'day': 'Day',
                 'evening': 'Evening',
@@ -30,8 +30,8 @@ class StorageManager:
                            '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20'],
                 'settings': '⚙️ Настройки',
                 'lang_change': '🌐 Смена языка',
-                'rus_button': '🇷🇺 Русский',
-                'eng_button': '🇬🇧 English',
+                'ru_button': '🇷🇺 Русский',
+                'en_button': '🇬🇧 English',
                 'morning': 'Утро',
                 'day': 'День',
                 'evening': 'Вечер',
@@ -40,7 +40,7 @@ class StorageManager:
         }
 
         self.message = {
-            'eng': {
+            'en': {
                 'menu_stage': '🧭 What would you like to do?',
                 'resume_stage': '📊 Here is your summary:',
                 'shift_stage': '🕒 Choose your shift:',
@@ -52,7 +52,11 @@ class StorageManager:
                 'language_choose_stage': '🌐 Which language do you prefer?',
                 'language_change_stage': '✅ Done! Language updated.',
                 'wrong_input_stage': '🤔 Hmm, I didn’t quite get that. Could you try entering it again?',
-                'wrong_input_stage_no_start': "Looks like we haven't started yet! Type /start to begin."
+                'wrong_input_stage_no_start': "Looks like we haven't started yet! Type /start to begin.",
+                'chek_stage_info': ('👤 User: @{username}\n\n'
+                                   '🕒 Shift: {shift}\n\n'
+                                   '💬 Amo: {amo}\n\n'
+                                   '✈️ Telegram: {tg}')
             },
             'ru': {
                 'menu_stage': '🧭 Выбери нужное действие:',
@@ -66,7 +70,11 @@ class StorageManager:
                 'language_choose_stage': '🌐 Какой язык тебе удобнее?',
                 'language_change_stage': '✅ Готово! Язык изменён.',
                 'wrong_input_stage': '🤔 Хм, кажется, что-то пошло не так. Попробуй ввести ещё раз!',
-                'wrong_input_stage_no_start': 'Похоже, мы ещё не начали! Напиши /start, чтобы запустить бота.'
+                'wrong_input_stage_no_start': 'Похоже, мы ещё не начали! Напиши /start, чтобы запустить бота.',
+                'chek_stage_info': ('👤 Пользователь: @{username}\n\n'
+                                   '🕒 Смена: {shift}\n\n'
+                                   '💬 Amo: {amo}\n\n'
+                                   '✈️ Telegram: {tg}')
             }
         }
 
@@ -93,10 +101,10 @@ class StorageManager:
                 'message': 'settings_stage'
             },
             'language_choose_stage': {
-                'buttons': ['rus_button', 'eng_button', 'back'],
+                'buttons': ['ru_button', 'en_button', 'back'],
                 'transition': {
-                    'rus_button': 'language_change_stage',
-                    'eng_button': 'language_change_stage'
+                    'ru_button': 'language_change_stage',
+                    'en_button': 'language_change_stage'
                 },
                 'message': 'language_choose_stage'
             },
@@ -145,7 +153,7 @@ class StorageManager:
         }
 
         self.pdf_assets = {
-            'eng': {
+            'en': {
                 'head': ('#', 'Date', 'Day', 'Shift', 'Amo', 'Telegram chat'),
                 'title': 'Summary'
             },
@@ -173,6 +181,9 @@ class StorageManager:
         except:
             return None
 
+    def get_button_name(self, user_lang, button_id):
+        return self.buttons[user_lang].get(button_id)
+
     def get_buttons_ids(self, user_stage):
         return self.stage[user_stage]['buttons']
 
@@ -195,7 +206,7 @@ class StorageManager:
 
 
 class UserManager:
-    default_language = 'eng'
+    default_language = 'en'
 
     def __init__(self):
         self.user_id = None

@@ -15,6 +15,11 @@ def message_writer(user_stage, user_lang):
         return ''
     return res
 
+def check_writer(user_stage, user_lang, user_name ,user_shift, counter_amo, counter_tg):
+    template = storage.get_message(user_stage, user_lang)
+    return template.format(username=user_name, shift=user_shift, amo=counter_amo, tg=counter_tg)
+
+
 def save_get(chat_data, user_id, func):
     try:
         return func(chat_data.get(user_id))
@@ -54,18 +59,18 @@ def cancel_manager(user_stage, user_input, user_lang):
 
 def language_change(user_input, user_lang):
     user_button_id = storage.get_button_id(user_input, user_lang)
-    if user_button_id == 'eng_button':
-        return 'eng'
+    if user_button_id == 'en_button':
+        return 'en'
     else:
         return 'ru'
 
-def data_transformer(data):
+def data_transformer(data, user_lang):
     res = []
     counter = 1
     for e in data[::-1]:
         utc_time = pendulum.parse(e[0])
         paris_date = utc_time.in_tz('Europe/Paris').format('DD/MM/YYYY')
-        day = pendulum.from_format(paris_date, 'DD/MM/YYYY').format('dddd')
-        res.append((counter, paris_date, day, e[1], e[2], e[3]))
+        day = pendulum.from_format(paris_date, 'DD/MM/YYYY').format('dddd', locale=user_lang).title()
+        res.append((counter, paris_date, day, storage.get_button_name(user_lang, e[1]), e[2], e[3]))
         counter += 1
     return res

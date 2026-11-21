@@ -64,7 +64,7 @@ def resume_stage(message):
     user.push_stage('resume_stage')
     bot.send_message(chat_id, u.message_writer(user.get_stage(), user.get_language()))
 
-    data = [storage.get_pdf_head(user.get_language())] + u.data_transformer(database.read(user.get_user_id()))
+    data = [storage.get_pdf_head(user.get_language())] + u.data_transformer(database.read(user.get_user_id()), user.get_language())
 
     file_path = pdf_creator(user.get_user_id(), storage.get_pdf_title(user.get_language()),data)
 
@@ -129,7 +129,7 @@ def counter_stage_1(message):
     chat_id = message.chat.id
     user = chat_data[chat_id]
     user.push_stage('counter_stage_1')
-    user.add_data('shift', message.text)
+    user.add_data('shift', storage.get_button_id(message.text, user.get_language()))
     markup = u.button_creator(user.get_stage(), user.get_language())
     #user.print_stage()
     bot.send_message(chat_id, u.message_writer(user.get_stage(), user.get_language()), reply_markup=markup)
@@ -159,10 +159,11 @@ def check_stage(message):
     markup = u.button_creator(user.get_stage(), user.get_language())
     #user.print_stage()
     bot.send_message(chat_id, u.message_writer(user.get_stage(), user.get_language()), reply_markup=markup)
-
-    res = (f'user: {message.chat.username}, shift: {user.get_data('shift')}, '
-           f'amo: {user.get_data('counter_stage_1')}, tg: {user.get_data('counter_stage_2')}')
-    bot.send_message(chat_id, res)
+    bot.send_message(chat_id, u.check_writer('chek_stage_info',
+                                             user.get_language(), message.chat.username,
+                                             storage.get_button_name(user.get_language(), user.get_data('shift')),
+                                             user.get_data('counter_stage_1'),
+                                             user.get_data('counter_stage_2')))
 
 
 @bot.message_handler(func=lambda message: u.stage_manager(u.save_get(chat_data, message.chat.id, UserManager.get_stage),

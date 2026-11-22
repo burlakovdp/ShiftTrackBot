@@ -1,4 +1,6 @@
+import os
 from fpdf import FPDF
+
 
 class PDF(FPDF):
     def __init__(self):
@@ -24,6 +26,10 @@ class PDF(FPDF):
         self.doc_title = title
 
 def pdf_creator(user_id, title, data):
+
+    if not os.path.exists('output'):
+        os.makedirs('output')
+
     pdf = PDF()
     pdf.set_doc_title(title)
     pdf.add_page()

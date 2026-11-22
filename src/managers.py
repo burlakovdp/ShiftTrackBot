@@ -53,7 +53,7 @@ class StorageManager:
                 'language_change_stage': '✅ Done! Language updated.',
                 'wrong_input_stage': '🤔 Hmm, I didn’t quite get that. Could you try entering it again?',
                 'wrong_input_stage_no_start': "Looks like we haven't started yet! Type /start to begin.",
-                'chek_stage_info': ('👤 User: @{username}\n\n'
+                'check_stage_info': ('👤 User: @{username}\n\n'
                                    '🕒 Shift: {shift}\n\n'
                                    '💬 Amo: {amo}\n\n'
                                    '✈️ Telegram: {tg}')

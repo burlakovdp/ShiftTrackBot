@@ -159,7 +159,7 @@ def check_stage(message):
     markup = u.button_creator(user.get_stage(), user.get_language())
     #user.print_stage()
     bot.send_message(chat_id, u.message_writer(user.get_stage(), user.get_language()), reply_markup=markup)
-    bot.send_message(chat_id, u.check_writer('chek_stage_info',
+    bot.send_message(chat_id, u.check_writer('check_stage_info',
                                              user.get_language(), message.chat.username,
                                              storage.get_button_name(user.get_language(), user.get_data('shift')),
                                              user.get_data('counter_stage_1'),

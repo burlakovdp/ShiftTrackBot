@@ -1,8 +1,8 @@
-# ShiftTrack
+# ShiftTrackBot
 
 > A simple Telegram bot for tracking work shifts and processed messages.
 
-ShiftTrack helps employees log their work shifts along with the number of messages handled in AmoCRM and Telegram chat. All entries are saved to a database and can be exported anytime as a structured PDF summary report.
+ShiftTrackBot helps employees log their work shifts along with the number of messages handled in AmoCRM and Telegram chat. All entries are saved to a database and can be exported anytime as a structured PDF summary report.
 
 The bot is bilingual (🇷🇺 Russian / 🇬🇧 English) — users can switch languages in the settings, and their preference is saved automatically.
 

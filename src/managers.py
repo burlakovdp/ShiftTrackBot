@@ -53,7 +53,7 @@ class StorageManager:
                 'language_change_stage': '✅ Done! Language updated.',
                 'wrong_input_stage': '🤔 Hmm, I didn’t quite get that. Could you try entering it again?',
                 'wrong_input_stage_no_start': "Looks like we haven't started yet! Type /start to begin.",
-                'chek_stage_info': ('👤 User: @{username}\n\n'
+                'check_stage_info': ('👤 User: @{username}\n\n'
                                    '🕒 Shift: {shift}\n\n'
                                    '💬 Amo: {amo}\n\n'
                                    '✈️ Telegram: {tg}')
@@ -71,7 +71,7 @@ class StorageManager:
                 'language_change_stage': '✅ Готово! Язык изменён.',
                 'wrong_input_stage': '🤔 Хм, кажется, что-то пошло не так. Попробуй ввести ещё раз!',
                 'wrong_input_stage_no_start': 'Похоже, мы ещё не начали! Напиши /start, чтобы запустить бота.',
-                'chek_stage_info': ('👤 Пользователь: @{username}\n\n'
+                'check_stage_info': ('👤 Пользователь: @{username}\n\n'
                                    '🕒 Смена: {shift}\n\n'
                                    '💬 Amo: {amo}\n\n'
                                    '✈️ Telegram: {tg}')

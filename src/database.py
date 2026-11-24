@@ -1,7 +1,11 @@
 import sqlite3
 import pendulum
+import os
+import dotenv
 
-DATABASE = "data/data.db"
+dotenv.load_dotenv()
+
+DATABASE = os.getenv('DB_PATH')
 
 def insert_data(user_id, shift, message_counter_1, message_counter_2):
 
